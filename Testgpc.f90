@@ -1,81 +1,73 @@
 PROGRAM TESTGPC
 
-  !/************************************************************************
-  ! * TESTGPC								*
-  ! *									*
-  ! * This program tests the GPC contributed library public functions.	*
-  ! *									*
-  ! ***********************************************************************/
+  ! This program tests the GPC contributed library public functions.
+
+  use, intrinsic:: ISO_C_BINDING
+
   USE TESTGPC_1
   USE GPC
 
-  use, intrinsic :: ISO_C_BINDING
-
   interface
-
-     subroutine C_fopen(ifp, filename, mode, ier) &
-          bind(C, name='C_fopen')
+     subroutine C_fopen(ifp, filename, mode, ier) bind(C, name='C_fopen')
        import
        implicit none
-       type(C_PTR) :: ifp
-       character(KIND=C_CHAR), intent(IN) :: filename(*)
-       character(KIND=C_CHAR), intent(IN) :: mode(*)
-       integer(C_int), intent(inout) :: ier
+       type(C_PTR) ifp
+       character(KIND=C_CHAR), intent(IN):: filename(*)
+       character(KIND=C_CHAR), intent(IN):: mode(*)
+       integer(C_int), intent(inout):: ier
      end subroutine C_fopen
 
      function fclose(stream) bind(C, name='fclose')
        import
        implicit none
        integer(C_INT) fclose
-       type(C_PTR), value :: stream
+       type(C_PTR), value:: stream
      end function fclose
-
   end interface
 
-  ! - - - local declarations - - -
   INTEGER n, argc, ii, cont, numsub, which, ier, operation, readholeflag
   integer writeholeflag
-  INTEGER :: nverts, pagflg, hole, iresnum_vertex
-  REAL :: xv(80000), yv(80000)
-  INTEGER :: ifpo, fpclose, ifpread, iclose
+  INTEGER nverts, pagflg, hole, iresnum_vertex
+  REAL xv(80000), yv(80000)
+  INTEGER ifpo, fpclose, ifpread, iclose
 
-  CHARACTER (LEN=8, KIND=C_CHAR) :: select
-  CHARACTER (LEN=4, KIND=C_CHAR) :: mode
-  CHARACTER (LEN=256, KIND=C_CHAR) :: filnam
-  CHARACTER (LEN=80) :: buffer
-  CHARACTER (LEN=8) :: errgrp
-  CHARACTER (LEN=99) :: argv(20)
-  CHARACTER :: argv2(99, 20); EQUIVALENCE (argv2, argv)
+  CHARACTER(LEN=8, KIND=C_CHAR) select
+  CHARACTER(LEN=4, KIND=C_CHAR) mode
+  CHARACTER(LEN=256, KIND=C_CHAR) filnam
+  CHARACTER(LEN=80) buffer
+  CHARACTER(LEN=8) errgrp
+  CHARACTER(LEN=99) argv(20)
+  CHARACTER argv2(99, 20)
+  EQUIVALENCE (argv2, argv)
 
-  real(8) :: result
+  double precision result
 
-  type(C_PTR) :: fpopen
+  type(C_PTR) fpopen
   INTEGER(C_INTPTR_T) iifpo
 
   type(C_GPC_POLYGON) C_subject_polygon, C_clip_polygon, C_result_polygon
   integer(C_INT) C_num_contours
-  type(C_GPC_VERTEX_LIST), pointer :: C_contour(:)
+  type(C_GPC_VERTEX_LIST), pointer:: C_contour(:)
   type(C_GPC_VERTEX_LIST) C_verticies
   integer C_npts
-  type(C_GPC_VERTEX), pointer :: C_vertex(:)
+  type(C_GPC_VERTEX), pointer:: C_vertex(:)
 
-  INTEGER(SELECTED_INT_KIND(4)), PARAMETER :: GPC_DIFF = 0, &
-       GPC_INT = 1, &
-       GPC_XOR = 2, &
-       GPC_UNION = 3
+  INTEGER(SELECTED_INT_KIND(4)), PARAMETER:: GPC_DIFF = 0, GPC_INT = 1, &
+       GPC_XOR = 2, GPC_UNION = 3
 
-  TYPE (F_GPC_POLYGON) :: subject_polygon, clip_polygon, result_polygon
-  TYPE (F_GPC_VERTEX_LIST) :: contour
-  TYPE (F_gpc_op) :: gpc_mode
+  TYPE (F_GPC_POLYGON) subject_polygon, clip_polygon, result_polygon
+  TYPE (F_GPC_VERTEX_LIST) contour
+  TYPE (F_gpc_op) gpc_mode
 
-  INTEGER :: IFILENUM
-  LOGICAL :: LFILENUM(200)
-  COMMON/FILEINFO/IFILENUM, LFILENUM
+  INTEGER IFILENUM
+  LOGICAL LFILENUM(200)
+  COMMON /FILEINFO/IFILENUM, LFILENUM
 
   LOGICAL DEBUG
   COMMON /PDEBUG/ DEBUG
 
-  ! - - - begin - - -
+  !-------------------------------------------------------------------------
+  
   OPEN(25, FILE='TESTGPC.TXT', STATUS='UNKNOWN')
   WRITE(25, *)'START TESTGPC'
 
@@ -191,13 +183,13 @@ PROGRAM TESTGPC
         WRITE(*, 902) "[<second-contour-hole-flag>]"
         WRITE(*, 902) "<vertex-list> "
         WRITE(*, 902) "etc."
-        WRITE(*, 902) "Enter filename to read polygon from : "
+        WRITE(*, 902) "Enter filename to read polygon from: "
         READ (*, 902) filnam
         WRITE(*, 903) "Enter whether file format contains hole flags (", &
-             G_FALSE, "-FALSE, ", G_TRUE, "-TRUE) :"
+             G_FALSE, "-FALSE, ", G_TRUE, "-TRUE):"
         READ (*, 904) readholeflag
         WRITE(*, 903) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
-             "-CLIP) :"
+             "-CLIP):"
         READ (*, 904) which
 
         Call C_fopen (fpopen, filnam, mode, ier)
@@ -228,7 +220,7 @@ PROGRAM TESTGPC
      END IF
 
      IF (numsub == 2) THEN
-        WRITE(*, 902) "Enter filename to write polygon to : "
+        WRITE(*, 902) "Enter filename to write polygon to: "
         READ (*, 902) filnam
         WRITE(*, 903) "Enter the write hole flag (", G_FALSE, "-FALSE, ", &
              G_TRUE, "-TRUE):"
@@ -433,8 +425,6 @@ PROGRAM TESTGPC
   IF (C_result_polygon%num_contours /= 0) &
        CALL gpc_free_polygon(C_result_polygon)
   IF (contour%num_vertices /= 0) DEALLOCATE(contour%vertex)
-
-  STOP (0)
 
 901 FORMAT (/A)
 902 FORMAT (99A)
