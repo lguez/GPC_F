@@ -912,19 +912,6 @@ CONTAINS
   END FUNCTION F_FOPEN
 
   !**********************************************************************
-  ! -----------------------------
-  SUBROUTINE FFLUSH (unitnum)
-    ! -----------------------------
-    !  USE DFLIB, ONLY: COMMITQQ
-    USE IFCORE, ONLY: COMMITQQ
-    IMPLICIT NONE
-    INTEGER, INTENT(IN) :: unitnum
-    LOGICAL :: result
-
-    result = COMMITQQ (unitnum)
-  END SUBROUTINE FFLUSH
-
-  !**********************************************************************
   ! ---------------------------
   FUNCTION FGETC (unit,ch)  RESULT(status)
     ! ---------------------------
