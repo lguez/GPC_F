@@ -193,9 +193,11 @@ PROGRAM TESTGPC
         WRITE(*, 902) "etc."
         WRITE(*, 902) "Enter filename to read polygon from : "
         READ (*, 902) filnam
-        WRITE(*, 903) "Enter whether file format contains hole flags (", G_FALSE, "-FALSE, ", G_TRUE, "-TRUE) :"
+        WRITE(*, 903) "Enter whether file format contains hole flags (", &
+             G_FALSE, "-FALSE, ", G_TRUE, "-TRUE) :"
         READ (*, 904) readholeflag
-        WRITE(*, 903) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, "-CLIP) :"
+        WRITE(*, 903) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
+             "-CLIP) :"
         READ (*, 904) which
 
         Call C_fopen (fpopen, filnam, mode, ier)
@@ -228,9 +230,11 @@ PROGRAM TESTGPC
      IF (numsub == 2) THEN
         WRITE(*, 902) "Enter filename to write polygon to : "
         READ (*, 902) filnam
-        WRITE(*, 903) "Enter the write hole flag (", G_FALSE, "-FALSE, ", G_TRUE, "-TRUE):"
+        WRITE(*, 903) "Enter the write hole flag (", G_FALSE, "-FALSE, ", &
+             G_TRUE, "-TRUE):"
         READ (*, 904) writeholeflag
-        WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, "-CLIP, ", IRESULT, "-RESULT):"
+        WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
+             "-CLIP, ", IRESULT, "-RESULT):"
         READ (*, 904) which
 
         WRITE(25, *)'TESTGPC: attempting to write a polygon...'
@@ -267,9 +271,11 @@ PROGRAM TESTGPC
         IF (nverts == 0) THEN
            WRITE(*, 902) "Must first create a vertex list (option 11)"
         ELSE
-           WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, "-CLIP, ", IRESULT, "-RESULT) to add vertex list to:"
+           WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
+                "-CLIP, ", IRESULT, "-RESULT) to add vertex list to:"
            READ (*, 904) which
-           WRITE(*, 903) "Enter the hole flag (", G_TRUE, "-HOLE, ", G_FALSE, "-NOT A HOLE):"
+           WRITE(*, 903) "Enter the hole flag (", G_TRUE, "-HOLE, ", G_FALSE, &
+                "-NOT A HOLE):"
            READ (*, 904) hole
 
            ! hole = 0
@@ -288,25 +294,31 @@ PROGRAM TESTGPC
 
      IF (numsub == 4) THEN
         ! 906 FORMAT (A, I0, A, I0, A, I0, A, I0, A)
-        WRITE(*, 906) "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
+        WRITE(*, 906) "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
+             "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
         ! 904 FORMAT (I)
         READ (*, 904) operation
         WRITE(25, *)'TESTGPC: operation = ', operation
         WRITE(25, *)'TESTGPC: calling gpc_polygon_clip...'
-        CALL gpc_polygon_clip(operation, C_subject_polygon, C_clip_polygon, C_result_polygon)
+        CALL gpc_polygon_clip(operation, C_subject_polygon, C_clip_polygon, &
+             C_result_polygon)
      END IF
 
      IF (numsub == 5) THEN
-        WRITE(*, 907, ADVANCE='NO') "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, "-CLIP, ", IRESULT, "-RESULT, ", ALL, "-ALL) ", &
-             "to free contours:", " "
+        WRITE(*, 907, ADVANCE='NO') "Enter which polygon (", SUBJECT, &
+             "-SUBJECT, ", CLIP, "-CLIP, ", IRESULT, "-RESULT, ", ALL, &
+             "-ALL) ", "to free contours:", " "
         READ (*, 904) which
 
         IF (which == SUBJECT .OR. which == ALL) THEN
-           IF (C_subject_polygon%num_contours /= 0) CALL gpc_free_polygon(C_subject_polygon)
+           IF (C_subject_polygon%num_contours /= 0) &
+                CALL gpc_free_polygon(C_subject_polygon)
         ELSE IF (which == CLIP .OR. which == ALL) THEN
-           IF (C_clip_polygon%num_contours /= 0) CALL gpc_free_polygon(C_clip_polygon)
+           IF (C_clip_polygon%num_contours /= 0) &
+                CALL gpc_free_polygon(C_clip_polygon)
         ELSE IF (which == IRESULT .OR. which == ALL) THEN
-           IF (C_result_polygon%num_contours /= 0) CALL gpc_free_polygon(C_result_polygon)
+           IF (C_result_polygon%num_contours /= 0) &
+                CALL gpc_free_polygon(C_result_polygon)
         END IF
 
      END IF
@@ -331,7 +343,8 @@ PROGRAM TESTGPC
                  READ (*, 908) xv(ii), yv(ii)
               END DO
 
-              IF (C_verticies%num_vertices /= 0) call gpc_free_vertex(C_verticies)
+              IF (C_verticies%num_vertices /= 0) &
+                   call gpc_free_vertex(C_verticies)
 
               CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
 
@@ -339,15 +352,17 @@ PROGRAM TESTGPC
 
               nverts = 0
 
-              WRITE(*, 909) "Note that the file format is simply a list of coordinate pairs ", &
-                   "separated by whitespace. The number of points will be counted automatically. ", &
-                   "For instance, a file containing:", "0 0", "0 1", "1 1", &
-                   "yields a vertex list of three points."
+              WRITE(*, 909) "Note that the file format is simply a list of ", &
+                   "coordinate pairs separated by whitespace. The number of ", &
+                   "points will be counted automatically. For instance, a ", &
+                   "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
+                   "three points."
 
-              WRITE(25, 909) "Note that the file format is simply a list of coordinate pairs ", &
-                   "separated by whitespace. The number of points will be counted automatically. ", &
-                   "For instance, a file containing:", "0 0", "0 1", "1 1", &
-                   "yields a vertex list of three points."
+              WRITE(25, 909) "Note that the file format is simply a list of ", &
+                   "coordinate pairs separated by whitespace. The number of ", &
+                   "points will be counted automatically. For instance, a ", &
+                   "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
+                   "three points."
 
               call FL_SOPN (filnam, ifpread, ier)
 
@@ -361,15 +376,16 @@ PROGRAM TESTGPC
                     ! WRITE(25, *)'TESTGPC: read buffer = ', nverts, buffer
                     READ (buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
 
-                    ! WRITE(25, *)'TESTGPC: read x/yv = ', nverts, xv(nverts), yv(nverts)
                     CALL cfl_trln(ifpread, 80, buffer, ier)
                  END DO
 
-                 WRITE(*, 910) "EOF reached in file ", filnam, ", number of vertices = ", nverts
+                 WRITE(*, 910) "EOF reached in file ", filnam, &
+                      ", number of vertices = ", nverts
                  ! CALL cfl_clos(ifpread, ier)
                  close(ifpread)
 
-                 IF (C_verticies%num_vertices /= 0) call gpc_free_vertex(C_verticies)
+                 IF (C_verticies%num_vertices /= 0) &
+                      call gpc_free_vertex(C_verticies)
 
                  CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
 
@@ -411,9 +427,11 @@ PROGRAM TESTGPC
 
   END DO
 
-  IF (C_subject_polygon%num_contours /= 0) CALL gpc_free_polygon(C_subject_polygon)
+  IF (C_subject_polygon%num_contours /= 0) &
+       CALL gpc_free_polygon(C_subject_polygon)
   IF (C_clip_polygon%num_contours /= 0) CALL gpc_free_polygon(C_clip_polygon)
-  IF (C_result_polygon%num_contours /= 0) CALL gpc_free_polygon(C_result_polygon)
+  IF (C_result_polygon%num_contours /= 0) &
+       CALL gpc_free_polygon(C_result_polygon)
   IF (contour%num_vertices /= 0) DEALLOCATE(contour%vertex)
 
   STOP (0)
