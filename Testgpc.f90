@@ -1,17 +1,3 @@
-! --------------------------------------------------
-MODULE TESTGPC_1         ! global declarations
-! --------------------------------------------------
-  USE GEMPRM
-  USE GPC
-  
-  INTEGER,PARAMETER :: SUBJECT=0
-  INTEGER,PARAMETER :: CLIP=1
-  INTEGER,PARAMETER :: IRESULT=2
-  INTEGER,PARAMETER :: ALL=3
-
-END MODULE
- 
-! --------------------------------------------------
 PROGRAM TESTGPC
 ! --------------------------------------------------
 !/************************************************************************
@@ -467,4 +453,3 @@ use, intrinsic :: ISO_C_BINDING
 913 FORMAT (A,F0.6)
 
 END PROGRAM
-!  0 Errors detected
