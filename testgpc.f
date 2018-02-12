@@ -5,7 +5,7 @@ PROGRAM TESTGPC
   use, intrinsic:: ISO_C_BINDING
 
   USE TESTGPC_1
-  USE GPC
+  USE module_GPC
 
   interface
      subroutine C_fopen(ifp, filename, mode, ier) bind(C, name='C_fopen')

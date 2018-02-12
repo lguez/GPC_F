@@ -3,7 +3,7 @@ MODULE TESTGPC_1
   ! global declarations
 
   USE GEMPRM
-  USE GPC
+  USE module_GPC
 
   INTEGER, PARAMETER :: SUBJECT=0
   INTEGER, PARAMETER :: CLIP=1
