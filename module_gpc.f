@@ -25,6 +25,12 @@ module module_gpc
      type(C_PTR) C_contour
   END TYPE C_GPC_POLYGON
 
+  ENUM, BIND(C)
+     ENUMERATOR :: GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
+  END ENUM
+
+  integer, parameter :: C_GPC_OP = kind(GPC_DIFF)
+
   interface
      SUBROUTINE gpc_free_polygon(polygon) &
           BIND(C, name='gpc_free_polygon')
@@ -109,11 +115,5 @@ module module_gpc
        TYPE(C_GPC_VERTEX_LIST) vertex_list
      end SUBROUTINE gpc_free_vertex
   end interface
-
-  ENUM, BIND(C)
-     ENUMERATOR :: GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
-  END ENUM
-
-  integer, parameter :: C_GPC_OP = kind(GPC_DIFF)
 
 end module module_gpc
