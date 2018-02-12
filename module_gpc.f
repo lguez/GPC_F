@@ -1,4 +1,4 @@
-module gpc
+module module_gpc
 
   use, intrinsic :: ISO_C_BINDING
 
@@ -116,4 +116,4 @@ module gpc
 
   integer, parameter :: C_GPC_OP = kind(GPC_DIFF)
 
-end module gpc
+end module module_gpc
