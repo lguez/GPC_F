@@ -20,8 +20,8 @@ C
       REAL P(N),Q(N),RP(128),RQ(128),RX(*),RY(*)
       DATA NSBTOT/0/
       
-	LOGICAL DEBUG
-   	COMMON /PDEBUG/ DEBUG
+ LOGICAL DEBUG
+    COMMON /PDEBUG/ DEBUG
 
 !------------------------------------------------------------------------
       IF (DEBUG) write(25,*)'GZPUTR START '
@@ -47,14 +47,14 @@ C
           DO I=1,N
             RX(I) = RP(I)
             RY(I) = RQ(I)
-		ENDDO
+  ENDDO
 
         ELSE
 
           DO I=1,N
             RX(I) = P(I)
             RY(I) = Q(I)
-		ENDDO
+  ENDDO
 
         ENDIF
 
@@ -99,7 +99,7 @@ C
               GOTO 9999
             ENDIF
 
-		ENDDO
+  ENDDO
 
         ELSE
 
@@ -109,7 +109,7 @@ C
             DO I=1,128
               RX(I) = P(KPNT+I)
               RY(I) = Q(KPNT+I)
-		  ENDDO
+    ENDDO
 
             IF (IFRST .GT. 0) THEN
               IL2 = 0
@@ -125,7 +125,7 @@ C
               GOTO 9999
             ENDIF
 
-		ENDDO
+  ENDDO
 
         ENDIF
 C
@@ -164,7 +164,7 @@ C
           DO I=1,RL2
             RX(I) = P(KPNT+I)
             RY(I) = Q(KPNT+I)
-		ENDDO
+  ENDDO
 
           IF (IFRST .GT. 0) THEN
             IL2 = 0
@@ -184,7 +184,7 @@ C
 
       ENDIF
 C
-9999	CONTINUE 
+9999 CONTINUE 
 
       IF (DEBUG) write(25,*)'GZPUTR END '
 

@@ -1,40 +1,40 @@
 SUBROUTINE cfl_trln(ifptr,bufsiz,buffer,iret)
 ! --------------------------------------------------
 !/************************************************************************
-! * cfl_trln								*
-! *									*
-! * This function reads a line of data from a GEMPAK table file into	*
-! * BUFFER.  It terminates the line after the last non-blank character	*
-! * with a null character.  This	function skips over comments and 	*
-! * blank lines.								*
-! *									*
-! * A GEMPAK table file is a text file that may have comment records	*
-! * within the file.  A comment record is a record where the first	*
-! * non-blank character is an exclamation point.				*
-! *									*
-! * This routine has an internal buffer size of LENBUF=256.  If the	*
-! * file which is being read contains records longer than 256, the	*
-! * chances are great that the file is not a GEMPAK table file and an	*
-! * error is returned.							*
-! *									*
-! * cfl_trln ( ifptr, bufsiz, buffer, iret )				*
-! *									*
-! * Input parameters:							*
-! *	*ifptr		FILE	File pointer				*
-! *	bufsiz		int	Size of buffer				*
-! *									*
-! * Output parameters:							*
-! *	*buffer		char	Text string from file			*
-! *	*iret		int	Return code				*
-! *				  0 = Normal; full record returned	*
-! *				  1 = Record length exceeds passed-in	*
-! *					buffer size; 			*
-! *					partial record returned		*
-! *				  4 = EOF reached			*
-! *				 -3 = Read failure			*
-! *				 -6 = No file has been opened		*
-! *				-24 = Record > internal buffer size	*
-! **									*
+! * cfl_trln        *
+! *         *
+! * This function reads a line of data from a GEMPAK table file into *
+! * BUFFER.  It terminates the line after the last non-blank character *
+! * with a null character.  This function skips over comments and  *
+! * blank lines.        *
+! *         *
+! * A GEMPAK table file is a text file that may have comment records *
+! * within the file.  A comment record is a record where the first *
+! * non-blank character is an exclamation point.    *
+! *         *
+! * This routine has an internal buffer size of LENBUF=256.  If the *
+! * file which is being read contains records longer than 256, the *
+! * chances are great that the file is not a GEMPAK table file and an *
+! * error is returned.       *
+! *         *
+! * cfl_trln ( ifptr, bufsiz, buffer, iret )    *
+! *         *
+! * Input parameters:       *
+! * *ifptr  FILE File pointer    *
+! * bufsiz  int Size of buffer    *
+! *         *
+! * Output parameters:       *
+! * *buffer  char Text string from file   *
+! * *iret  int Return code    *
+! *      0 = Normal; full record returned *
+! *      1 = Record length exceeds passed-in *
+! *     buffer size;    *
+! *     partial record returned  *
+! *      4 = EOF reached   *
+! *     -3 = Read failure   *
+! *     -6 = No file has been opened  *
+! *    -24 = Record > internal buffer size *
+! **         *
 
 !USE GEMINC
 USE GEMPRM
@@ -52,8 +52,8 @@ IMPLICIT NONE
   CHARACTER,POINTER :: string
   LOGICAL :: leof,lerror
   
- 	LOGICAL DEBUG
-   	COMMON /PDEBUG/ DEBUG
+  LOGICAL DEBUG
+    COMMON /PDEBUG/ DEBUG
 ! - - - begin - - -
     write(25,*)'cfl_trln START ',iret,ifptr
     
@@ -68,9 +68,9 @@ IMPLICIT NONE
     GOTO 9999
   END IF
 
-!	/*
-!	 *  Read records until a data record is found.
-!	 */
+! /*
+!  *  Read records until a data record is found.
+!  */
 
   found = 0
 
@@ -79,9 +79,9 @@ IMPLICIT NONE
   DO WHILE ( found == 0 )
 
 !      write(25,*)'cfl_trln: READING...'
-!	    /*
-!	     *  Read the record and check for errors.
-!	     */
+!     /*
+!      *  Read the record and check for errors.
+!      */
 
     read (ifptr,'(A)',SIZE=LENBUF,err=10,end=11,EOR=15, ADVANCE='NO' ) readbuf
     goto 15
@@ -103,9 +103,9 @@ IMPLICIT NONE
       GOTO 9999
     END IF
 
-!	    /*
-!	     *  Check the length of returned record.
-!	     */
+!     /*
+!      *  Check the length of returned record.
+!      */
 
     lenbuf2 = LEN(TRIM(ADJUSTL(readbuf)))
     
@@ -120,10 +120,10 @@ IMPLICIT NONE
       GOTO 9999
     END IF
 
-!	    /*
-!	     *  Check first non-blank character.  
-!	     *  If valid, copy string and return; otherwise continue.
-!	     */
+!     /*
+!      *  Check first non-blank character.  
+!      *  If valid, copy string and return; otherwise continue.
+!      */
 
 !    nonblank = strspn(readbuf, " \t")
     tchar = readbuf(nonblank+1:nonblank+1)
@@ -131,9 +131,9 @@ IMPLICIT NONE
 !    write(25,*)'cfl_trln: tchar = ',tchar
 
 !    IF ( tchar /= '.NOT.' .AND. tchar /= CHAR(10) .AND. &
-!		 tchar /= CHAR(000)) THEN
+!   tchar /= CHAR(000)) THEN
     IF ( tchar /= '!' .AND. tchar /= CHAR(10) .AND. &
-		 tchar /= CHAR(000)) THEN
+   tchar /= CHAR(000)) THEN
     found = 1
 
       IF ( lenbuf2 < bufsiz ) THEN

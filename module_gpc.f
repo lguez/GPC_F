@@ -83,8 +83,8 @@ module module_gpc
        IMPORT :: C_INT, C_FLOAT, C_GPC_VERTEX_LIST
        implicit none
        integer(C_INT), value :: npoly
-       real(C_FLOAT), 		intent(inout) :: px(*)
-       real(C_FLOAT), 		intent(inout) :: py(*)
+       real(C_FLOAT),   intent(inout) :: px(*)
+       real(C_FLOAT),   intent(inout) :: py(*)
        TYPE(C_GPC_VERTEX_LIST) vertex_list
        integer(C_INT), intent(inout) :: iret
      end SUBROUTINE gpc_cvlist
@@ -95,8 +95,8 @@ module module_gpc
        implicit none
        TYPE(C_GPC_VERTEX_LIST) vertex_list
        integer(C_INT), intent(inout) :: npoly
-       real(C_FLOAT), 		intent(inout) :: px(*)
-       real(C_FLOAT), 		intent(inout) :: py(*)
+       real(C_FLOAT),   intent(inout) :: px(*)
+       real(C_FLOAT),   intent(inout) :: py(*)
        integer(C_INT), intent(inout) :: iret
      end SUBROUTINE gpc_gvlist
 
@@ -105,7 +105,7 @@ module module_gpc
        IMPORT :: C_FLOAT, C_GPC_VERTEX_LIST
        implicit none
        TYPE(C_GPC_VERTEX_LIST) vertex_list
-       real(C_FLOAT), 	intent(inout) :: area
+       real(C_FLOAT),  intent(inout) :: area
      end SUBROUTINE gpc_gvarea
 
      SUBROUTINE gpc_free_vertex(vertex_list) &

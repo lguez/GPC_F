@@ -6,29 +6,29 @@ SUBROUTINE cfl_inqr(filnam,defdir,flen,newfil,iret)
 !!
 
 !/************************************************************************
-! * cfl_inqr								*
-! *									*
-! * This function determines whether a file exists and the file size.	 *
-! *									*
+! * cfl_inqr        *
+! *         *
+! * This function determines whether a file exists and the file size.  *
+! *         *
 ! * The file is located by searching in the following order (environment *
-! * variables may be used as part of the paths):				*
-! *									*
-! *	1. filnam (as given)						*
-! *	2. defdir/filnam						*
-! *									*
-! * cfl_inqr ( filnam, defdir, flen, newfil, iret )			*
-! *									*
-! * Input parameters:							*
-! *	*filnam		char		File name			*
-! *	*defdir		char		Default directory		*
-! *									*
-! * Output parameters:							*
-! *	*flen		long		File size			*
-! *	*newfil		char		Expanded file name		*
-! *	*iret		int		Return code			*
-! *					  0 = Normal, file exists	*
-! *					 -1 = File does not exist	*
-! **									*
+! * variables may be used as part of the paths):    *
+! *         *
+! * 1. filnam (as given)      *
+! * 2. defdir/filnam      *
+! *         *
+! * cfl_inqr ( filnam, defdir, flen, newfil, iret )   *
+! *         *
+! * Input parameters:       *
+! * *filnam  char  File name   *
+! * *defdir  char  Default directory  *
+! *         *
+! * Output parameters:       *
+! * *flen  long  File size   *
+! * *newfil  char  Expanded file name  *
+! * *iret  int  Return code   *
+! *       0 = Normal, file exists *
+! *      -1 = File does not exist *
+! **         *
 
 !USE GEMINC
 USE GEMPRM
@@ -42,7 +42,7 @@ IMPLICIT NONE
 ! - - - local declarations - - -
   INTEGER :: ier,ier1
   CHARACTER (LEN=LLPATH) :: newname
-  LOGICAL	::	Lexists
+  LOGICAL :: Lexists
 !  TYPE (STAT) :: stbuf
 
  LOGICAL DEBUG
@@ -61,11 +61,11 @@ IMPLICIT NONE
    newfil = filnam
 
 !C
-!C*	Do the INQUIRE with the modified file name.  If the file is
-!C*	found, we are done.
+!C* Do the INQUIRE with the modified file name.  If the file is
+!C* found, we are done.
 !C
 
-	INQUIRE ( FILE = newfil, EXIST = Lexists, SIZE = flen, IOSTAT = ier1 )
+ INQUIRE ( FILE = newfil, EXIST = Lexists, SIZE = flen, IOSTAT = ier1 )
     
     WRITE (25,*)'cfl_inqr: Lexists 1 = ',Lexists,IER1
       
@@ -80,7 +80,7 @@ IMPLICIT NONE
       newfil = newfil(1:LEN_TRIM(newfil)) // newname
  
       WRITE (25,*)'cfl_inqr: INQUIRE - 2 ',newfil
-  	  INQUIRE ( FILE = newfil, EXIST = Lexists, SIZE = flen, IOSTAT = ier1 )
+     INQUIRE ( FILE = newfil, EXIST = Lexists, SIZE = flen, IOSTAT = ier1 )
 
       WRITE (25,*)'cfl_inqr: Lexists 2 = ',Lexists,IER1
 !      ier1 = stat( newfil, stbuf )

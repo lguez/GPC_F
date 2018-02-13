@@ -1,31 +1,31 @@
 SUBROUTINE cgr_centroid(x, y, np, xcent, ycent, area, iret)
 ! --------------------------------------------------
 !/************************************************************************
-! * cgr_centroid								*
-! *									*
-! * This function computes the area and centroid (or center of mass)	*
-! * of the given polygon.						*
-! *									*
-! * Reference:								*
-! * Graphics Gems IV, "Centroid of a Polygon", Gerard Bashein and	*
-! * Paul R. Detmer, pp 3-5.						*
-! *									*
-! * cgr_centroid ( x, y, np, xcent, ycent, area, iret )			*
-! *									*
-! * Input parameters:							*
-! *	x [np]		float		X coordinates of polygon	*
-! *	y [np]		float		Y coordinates of polygon	*
+! * cgr_centroid        *
+! *         *
+! * This function computes the area and centroid (or center of mass) *
+! * of the given polygon.      *
+! *         *
+! * Reference:        *
+! * Graphics Gems IV, "Centroid of a Polygon", Gerard Bashein and *
+! * Paul R. Detmer, pp 3-5.      *
+! *         *
+! * cgr_centroid ( x, y, np, xcent, ycent, area, iret )   *
+! *         *
+! * Input parameters:       *
+! * x [np]  float  X coordinates of polygon *
+! * y [np]  float  Y coordinates of polygon *
 ! * *np         int         Number of point in polygon      *
-! *									*
-! * Output parameters:							*
-! *	*xcent		float		X coordinate of centroid	*
-! *	*ycent		float		Y coordinate of centroid	*
-! *	*area		float		Area of polygon			*
-! *	*iret		int		Return code			*
-! *					  -1 = Not enough points	*
-! *					  -2 = Area is zero		*
-! *									*
-! **									*
+! *         *
+! * Output parameters:       *
+! * *xcent  float  X coordinate of centroid *
+! * *ycent  float  Y coordinate of centroid *
+! * *area  float  Area of polygon   *
+! * *iret  int  Return code   *
+! *       -1 = Not enough points *
+! *       -2 = Area is zero  *
+! *         *
+! **         *
 !DONE
 !USE GEMINC
 USE GEMPRM
@@ -43,8 +43,8 @@ USE GEMPRM
 !  LOGICAL :: G_DIFF
   LOGICAL :: LOutput
 
-	LOGICAL DEBUG
-   	COMMON /PDEBUG/ DEBUG
+ LOGICAL DEBUG
+    COMMON /PDEBUG/ DEBUG
 
 !------------------------------------------------------------------------
   IF (DEBUG) write(25,*)'cgr_centroid START ',np

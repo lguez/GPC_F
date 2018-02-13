@@ -1,25 +1,25 @@
 FUNCTION fclose(fptr)  RESULT (output_4)
 ! --------------------------------------------------
 !/************************************************************************
-! * fclose								*
-! *									*
-! * This function closes a file and clears the pointer				*
-! *									*
-! * The file is located by searching in the following order:		*
-! *									*
-! *	1. filnam (as given)						*
-! *	2. defdir/filnam						*
-! *									*
-! * FUNCTION fclose (fptr)  RESULT (output_4)			*
-! *									*
-! * Input parameters:							*
-! *	*filnam		char		File name			*
-! *	*defdir		char		Default directory		*
-! *									*
-! * Output parameters:							*
-! *	*iret		int		Return code			*
-! *	*cfl_ropn	FILE		File pointer			*
-! **									*
+! * fclose        *
+! *         *
+! * This function closes a file and clears the pointer    *
+! *         *
+! * The file is located by searching in the following order:  *
+! *         *
+! * 1. filnam (as given)      *
+! * 2. defdir/filnam      *
+! *         *
+! * FUNCTION fclose (fptr)  RESULT (output_4)   *
+! *         *
+! * Input parameters:       *
+! * *filnam  char  File name   *
+! * *defdir  char  Default directory  *
+! *         *
+! * Output parameters:       *
+! * *iret  int  Return code   *
+! * *cfl_ropn FILE  File pointer   *
+! **         *
 
 IMPLICIT NONE
 ! - - - arg types - - -
@@ -42,7 +42,7 @@ IMPLICIT NONE
 
   IF(IER.EQ.0) THEN
     IFILENUM = 0
-	LFILENUM(fptr) = .FALSE.
+ LFILENUM(fptr) = .FALSE.
   ENDIF
   
 10 continue

@@ -1,32 +1,32 @@
 SUBROUTINE cfl_iret(ierrno,iflerr,iret)
 ! --------------------------------------------------
 !/************************************************************************
-! * cfl_iret								*
-! *									*
-! * This function translates a non-zero error value from a C I/O call	*
-! * into a GEMPAK "CFL" error code.					*
-! *									*
-! * cfl_iret ( ierrno, iflerr, iret )					*
-! *									*
-! * Input parameters:							*
-! *	 ierrno		int		Status from I/O operation	*
-! *									*
-! * Output parameters:							*
-! *	*iflerr		int		GEMPAK "CFL" error number	*
-! *					 -1 = File does not exist	*
-! *					 -2 = Cannot open file		*
-! *					 -3 = Cannot read file		*
-! *					 -4 = Cannot write file		*
-! *					 -5 = File already exists	*
-! *					 -6 = No file has been opened	*
-! *					 -7 = Cannot write / read	*
-! *					 -8 = Permission denied		*
-! *					 -9 = Invalid type of I/O	*
-! *					-10 = Is a directory		*
-! *					-11 = Is not a directory	*
-! *	*iret		int		Return code			*
-! *					   0 = Normal			*
-! **									*
+! * cfl_iret        *
+! *         *
+! * This function translates a non-zero error value from a C I/O call *
+! * into a GEMPAK "CFL" error code.     *
+! *         *
+! * cfl_iret ( ierrno, iflerr, iret )     *
+! *         *
+! * Input parameters:       *
+! *  ierrno  int  Status from I/O operation *
+! *         *
+! * Output parameters:       *
+! * *iflerr  int  GEMPAK "CFL" error number *
+! *      -1 = File does not exist *
+! *      -2 = Cannot open file  *
+! *      -3 = Cannot read file  *
+! *      -4 = Cannot write file  *
+! *      -5 = File already exists *
+! *      -6 = No file has been opened *
+! *      -7 = Cannot write / read *
+! *      -8 = Permission denied  *
+! *      -9 = Invalid type of I/O *
+! *     -10 = Is a directory  *
+! *     -11 = Is not a directory *
+! * *iret  int  Return code   *
+! *        0 = Normal   *
+! **         *
 
 !USE GEMINC
 USE GEMPRM
@@ -47,8 +47,8 @@ IMPLICIT NONE
   END IF
 
 !/*
-! *	Determine operating system from environment variable.
-! *	Translate ierrno into CFL-error.
+! * Determine operating system from environment variable.
+! * Translate ierrno into CFL-error.
 ! */
 
   IF ( ierrno == 2 )  THEN

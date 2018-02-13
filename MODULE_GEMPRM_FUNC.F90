@@ -4,28 +4,28 @@ CONTAINS
 
 !  Macro definitions
 
-!G_MAX(a,b)	= ( ( (a) > (b) ) ? (a) :  (b) )
+!G_MAX(a,b) = ( ( (a) > (b) ) ? (a) :  (b) )
 FUNCTION G_MAX(a,b)
 
 G_MAX = MAX(a,b)
 
 END FUNCTION
 
-!G_MIN(a,b)	= ( ( (a) < (b) ) ? (a) :  (b) )
+!G_MIN(a,b) = ( ( (a) < (b) ) ? (a) :  (b) )
 FUNCTION G_MIN(a,b)
 
 G_MIN = MIN(a,b)
 
 END FUNCTION
 
-!G_ABS(a)	= ( ( (a) >= 0.0F  ) ? (a) : -(a) )
+!G_ABS(a) = ( ( (a) >= 0.0F  ) ? (a) : -(a) )
 REAL FUNCTION G_ABS(a)
 
 G_ABS = ABS(a)
 
 END FUNCTION
 
-!G_NINT(x)	= (((x)<0.0F) ? 
+!G_NINT(x) = (((x)<0.0F) ? 
 !             ((((x)-(float)((int)(x)))<=-.5F)?(int)((x)-.5F):(int)(x)) : 
 !             ((((x)-(float)((int)(x)))>=.5F)?(int)((x)+.5F):(int)(x)))
 FUNCTION G_NINT(x)
@@ -40,7 +40,7 @@ END FUNCTION
 REAL FUNCTION G_DIST(x1, y1, x2, y2)
 
 G_DIST = (dsqrt (DBLE (((x2 - x1) * (x2 - x1)) +  &
-			           ((y2 - y1) * (y2 - y1)))))
+              ((y2 - y1) * (y2 - y1)))))
 
 END FUNCTION
 

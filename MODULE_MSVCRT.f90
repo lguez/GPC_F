@@ -9,7 +9,7 @@ module MSVCRT
    interface
 
      function fopen(filename, mode) &
-			bind(C,name='fopen')
+   bind(C,name='fopen')
          import
          implicit none
          type(C_PTR) fopen
@@ -27,7 +27,7 @@ module MSVCRT
 ! fscanf is only used for the purposes of completing this example
 ! delete this interface to a variadic function in real use
       function fscanf(stream, format, result) &
-			bind(C,name='fscanf')
+   bind(C,name='fscanf')
          import
          implicit none
          integer(C_INT) fscanf
