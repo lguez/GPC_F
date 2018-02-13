@@ -27,11 +27,11 @@ PROGRAM TESTGPC
      end function fclose
   end interface
 
-  INTEGER argc, ii, cont, numsub, which, ier, operation, readholeflag
+  INTEGER ii, cont, numsub, which, ier, operation, readholeflag
   integer writeholeflag
-  INTEGER nverts, pagflg, hole, iresnum_vertex
+  INTEGER nverts, pagflg, hole
   REAL xv(80000), yv(80000)
-  INTEGER ifpo, fpclose, ifpread, iclose
+  INTEGER fpclose, ifpread
 
   CHARACTER(LEN=8, KIND=C_CHAR) select
   CHARACTER(LEN=4, KIND=C_CHAR) mode
@@ -39,29 +39,22 @@ PROGRAM TESTGPC
   CHARACTER(LEN=80) buffer
   CHARACTER(LEN=8) errgrp
 
-  double precision result
-
   type(C_PTR) fpopen
   INTEGER(C_INTPTR_T) iifpo
 
   type(C_GPC_POLYGON) C_subject_polygon, C_clip_polygon, C_result_polygon
-  integer(C_INT) C_num_contours
-  type(C_GPC_VERTEX_LIST), pointer:: C_contour(:)
   type(C_GPC_VERTEX_LIST) C_verticies
-  integer C_npts
-  type(C_GPC_VERTEX), pointer:: C_vertex(:)
 
   INTEGER(SELECTED_INT_KIND(4)), PARAMETER:: GPC_DIFF = 0, GPC_INT = 1, &
        GPC_XOR = 2, GPC_UNION = 3
 
-  TYPE (F_GPC_POLYGON) subject_polygon, clip_polygon, result_polygon
-  TYPE (F_GPC_VERTEX_LIST) contour
-  TYPE (F_gpc_op) gpc_mode
+  TYPE(F_GPC_POLYGON) subject_polygon, clip_polygon, result_polygon
+  TYPE(F_GPC_VERTEX_LIST) contour
 
   INTEGER IFILENUM
   LOGICAL LFILENUM(200)
   real all, area, CLIP, G_FALSE, G_NORMAL, G_TRUE, subject
-  integer i, ifpc, iresult, iret, NARGS
+  integer i, iresult, iret
   COMMON /FILEINFO/IFILENUM, LFILENUM
 
   LOGICAL DEBUG
@@ -83,8 +76,6 @@ PROGRAM TESTGPC
      LFILENUM(I) = .FALSE.
   ENDDO
 
-  argc = NARGS() ! #args from command line
-
   C_subject_polygon%num_contours = 0
   C_subject_polygon%hole = C_NULL_PTR
   C_clip_polygon%num_contours = 0
@@ -99,13 +90,9 @@ PROGRAM TESTGPC
 
   nverts = 0
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
   ! NOTICE - IN THIS EXAMPLE, BOTH THE SUBJECT POLYGON AND THE CLIP POLYGON ARE
   ! READ AUTOMATICLY SO YOU DO NOT HAVE TO USE THE "1 = GPC_READ_POLYGON"
   ! OPTION.
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   ! filnam = 'arrows.gpf'
   filnam = 'britain.gpf' // C_NULL_CHAR
@@ -113,7 +100,7 @@ PROGRAM TESTGPC
 
   readholeflag = 0
   which = 0
-  Call C_fopen (fpopen, filnam, mode, ier)
+  Call C_fopen(fpopen, filnam, mode, ier)
 
   iifpo = transfer(fpopen, 0_C_INTPTR_T)
 
@@ -121,7 +108,6 @@ PROGRAM TESTGPC
   CALL gpc_read_polygon(fpopen, readholeflag, C_subject_polygon)
 
   fpclose = fclose(fpopen)
-  ifpc = transfer(fpclose, 0_C_INTPTR_T)
 
   WRITE(25, *)'TESTGPC: Subject Contours = ', C_subject_polygon%num_contours
 
@@ -129,7 +115,7 @@ PROGRAM TESTGPC
   filnam = 'arrow.gpf' // C_NULL_CHAR
   readholeflag = 0
   which = 1
-  Call C_fopen (fpopen, filnam, mode, ier)
+  Call C_fopen(fpopen, filnam, mode, ier)
   iifpo = transfer(fpopen, 0_C_INTPTR_T)
 
   WRITE(25, *)'TESTGPC READ CLIP POLYGON ', iifpo
@@ -154,7 +140,7 @@ PROGRAM TESTGPC
      WRITE(*, 902) " 99 = HELP on INPUT FILE FORMATS "
      WRITE(*, 902) ""
      WRITE(*, 902) "Select a subroutine number or type EXIT: "
-     READ (*, 902) select
+     READ(*, 902) select
 
      SELECT CASE (select(1:1))
 
@@ -163,7 +149,7 @@ PROGRAM TESTGPC
 
      CASE DEFAULT
         ! numsub = atoi(select)
-        CALL ST_NUMB (select, numsub, IRET)
+        CALL ST_NUMB(select, numsub, IRET)
 
         write(25, *)'****numsub = ', numsub
 
@@ -180,7 +166,7 @@ PROGRAM TESTGPC
         WRITE(*, 902) "<vertex-list> "
         WRITE(*, 902) "etc."
         WRITE(*, 902) "Enter filename to read polygon from: "
-        READ (*, 902) filnam
+        READ(*, 902) filnam
         WRITE(*, 903) "Enter whether file format contains hole flags (", &
              G_FALSE, "-FALSE, ", G_TRUE, "-TRUE):"
         read *, readholeflag
@@ -188,7 +174,7 @@ PROGRAM TESTGPC
              "-CLIP):"
         read *, which
 
-        Call C_fopen (fpopen, filnam, mode, ier)
+        Call C_fopen(fpopen, filnam, mode, ier)
         iifpo = transfer(fpopen, 0_C_INTPTR_T)
 
         WRITE(25, *)'TESTGPC IER = ', IER, IFILENUM
@@ -217,7 +203,7 @@ PROGRAM TESTGPC
 
      IF (numsub == 2) THEN
         WRITE(*, 902) "Enter filename to write polygon to: "
-        READ (*, 902) filnam
+        READ(*, 902) filnam
         WRITE(*, 903) "Enter the write hole flag (", G_FALSE, "-FALSE, ", &
              G_TRUE, "-TRUE):"
         read *, writeholeflag
@@ -228,7 +214,7 @@ PROGRAM TESTGPC
         WRITE(25, *)'TESTGPC: attempting to write a polygon...'
         mode = 'w'// C_NULL_CHAR
         filnam=TRIM(ADJUSTL(filnam))//char(0)
-        Call C_fopen (fpopen, filnam, mode, ier)
+        Call C_fopen(fpopen, filnam, mode, ier)
 
         IF (ier == G_NORMAL) THEN
            writeholeflag = 0
@@ -281,7 +267,6 @@ PROGRAM TESTGPC
      END IF
 
      IF (numsub == 4) THEN
-        ! 906 FORMAT (A, I0, A, I0, A, I0, A, I0, A)
         WRITE(*, 906) "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
              "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
         read *, operation
@@ -319,7 +304,7 @@ PROGRAM TESTGPC
                 " (to be followed by entering the points), ", &
                 " or a filename to read points from: "
 
-           READ (*, 902) filnam
+           READ(*, 902) filnam
            CALL st_numb(filnam, nverts, ier)
 
            WRITE(25, *)'TESTGPC: @11 - nverts 2 = ', nverts, ier
@@ -327,7 +312,7 @@ PROGRAM TESTGPC
            IF (ier == 0) THEN
 
               DO ii = 1, nverts
-                 READ (*, 908) xv(ii), yv(ii)
+                 READ(*, 908) xv(ii), yv(ii)
               END DO
 
               IF (C_verticies%num_vertices /= 0) &
@@ -351,7 +336,7 @@ PROGRAM TESTGPC
                    "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
                    "three points."
 
-              call FL_SOPN (filnam, ifpread, ier)
+              call FL_SOPN(filnam, ifpread, ier)
 
               WRITE(25, *)'TESTGPC: @11 fpread = ', ifpread
 
@@ -361,7 +346,7 @@ PROGRAM TESTGPC
                  DO WHILE (ier == 0)
                     nverts = nverts + 1
                     ! WRITE(25, *)'TESTGPC: read buffer = ', nverts, buffer
-                    READ (buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
+                    READ(buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
 
                     CALL cfl_trln(ifpread, 80, buffer, ier)
                  END DO
