@@ -852,9 +852,8 @@ CONTAINS
 
     CHARACTER (LEN=10) :: access, form, mode
     INTEGER :: iocheck, num
-    LOGICAL :: unitopen
 
-    INTEGER :: IFILENUM,I
+    INTEGER :: IFILENUM
     LOGICAL :: LFILENUM(100)
     COMMON/FILEINFO/IFILENUM,LFILENUM
 
@@ -1127,7 +1126,7 @@ CONTAINS
     ! -----------------------------
     !  Convert a pointer of n characters into a string of length n
     CHARACTER,INTENT(IN) :: strptr(:)
-    CHARACTER*999,PARAMETER :: filler=' '
+    CHARACTER(len=999),PARAMETER :: filler=' '
     CHARACTER (LEN=LEN_TRIM(TRANSFER(strptr,filler(:size(strptr))))) TO_STRING
     TO_STRING = TRANSFER(strptr,TO_STRING)
   END FUNCTION TO_STRING

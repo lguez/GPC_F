@@ -4,8 +4,10 @@ PROGRAM TESTGPC
 
   use, intrinsic:: ISO_C_BINDING
 
-  USE TESTGPC_1
-  USE module_GPC
+  USE TESTGPC_1, only: F_GPC_POLYGON, F_GPC_VERTEX_LIST, F_gpc_op
+  USE module_GPC, only: C_GPC_POLYGON, C_GPC_VERTEX_LIST, C_GPC_VERTEX
+
+  implicit none
 
   interface
      subroutine C_fopen(ifp, filename, mode, ier) bind(C, name='C_fopen')
@@ -25,7 +27,7 @@ PROGRAM TESTGPC
      end function fclose
   end interface
 
-  INTEGER n, argc, ii, cont, numsub, which, ier, operation, readholeflag
+  INTEGER argc, ii, cont, numsub, which, ier, operation, readholeflag
   integer writeholeflag
   INTEGER nverts, pagflg, hole, iresnum_vertex
   REAL xv(80000), yv(80000)
@@ -36,9 +38,6 @@ PROGRAM TESTGPC
   CHARACTER(LEN=256, KIND=C_CHAR) filnam
   CHARACTER(LEN=80) buffer
   CHARACTER(LEN=8) errgrp
-  CHARACTER(LEN=99) argv(20)
-  CHARACTER argv2(99, 20)
-  EQUIVALENCE (argv2, argv)
 
   double precision result
 
@@ -61,6 +60,8 @@ PROGRAM TESTGPC
 
   INTEGER IFILENUM
   LOGICAL LFILENUM(200)
+  real all, area, CLIP, G_FALSE, G_NORMAL, G_TRUE, subject
+  integer i, ifpc, iresult, iret, NARGS
   COMMON /FILEINFO/IFILENUM, LFILENUM
 
   LOGICAL DEBUG
@@ -83,11 +84,6 @@ PROGRAM TESTGPC
   ENDDO
 
   argc = NARGS() ! #args from command line
-
-  DO n = 1, 20
-     CALL GETARG(n, argv(n)) ! get command line arguments
-     IF (n == argc) EXIT
-  END DO
 
   C_subject_polygon%num_contours = 0
   C_subject_polygon%hole = C_NULL_PTR
@@ -187,10 +183,10 @@ PROGRAM TESTGPC
         READ (*, 902) filnam
         WRITE(*, 903) "Enter whether file format contains hole flags (", &
              G_FALSE, "-FALSE, ", G_TRUE, "-TRUE):"
-        READ (*, 904) readholeflag
+        read *, readholeflag
         WRITE(*, 903) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
              "-CLIP):"
-        READ (*, 904) which
+        read *, which
 
         Call C_fopen (fpopen, filnam, mode, ier)
         iifpo = transfer(fpopen, 0_C_INTPTR_T)
@@ -224,10 +220,10 @@ PROGRAM TESTGPC
         READ (*, 902) filnam
         WRITE(*, 903) "Enter the write hole flag (", G_FALSE, "-FALSE, ", &
              G_TRUE, "-TRUE):"
-        READ (*, 904) writeholeflag
+        read *, writeholeflag
         WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
              "-CLIP, ", IRESULT, "-RESULT):"
-        READ (*, 904) which
+        read *, which
 
         WRITE(25, *)'TESTGPC: attempting to write a polygon...'
         mode = 'w'// C_NULL_CHAR
@@ -265,10 +261,10 @@ PROGRAM TESTGPC
         ELSE
            WRITE(*, 905) "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
                 "-CLIP, ", IRESULT, "-RESULT) to add vertex list to:"
-           READ (*, 904) which
+           read *, which
            WRITE(*, 903) "Enter the hole flag (", G_TRUE, "-HOLE, ", G_FALSE, &
                 "-NOT A HOLE):"
-           READ (*, 904) hole
+           read *, hole
 
            ! hole = 0
 
@@ -288,8 +284,7 @@ PROGRAM TESTGPC
         ! 906 FORMAT (A, I0, A, I0, A, I0, A, I0, A)
         WRITE(*, 906) "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
              "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
-        ! 904 FORMAT (I)
-        READ (*, 904) operation
+        read *, operation
         WRITE(25, *)'TESTGPC: operation = ', operation
         WRITE(25, *)'TESTGPC: calling gpc_polygon_clip...'
         CALL gpc_polygon_clip(operation, C_subject_polygon, C_clip_polygon, &
@@ -300,7 +295,7 @@ PROGRAM TESTGPC
         WRITE(*, 907, ADVANCE='NO') "Enter which polygon (", SUBJECT, &
              "-SUBJECT, ", CLIP, "-CLIP, ", IRESULT, "-RESULT, ", ALL, &
              "-ALL) ", "to free contours:", " "
-        READ (*, 904) which
+        read *, which
 
         IF (which == SUBJECT .OR. which == ALL) THEN
            IF (C_subject_polygon%num_contours /= 0) &
@@ -429,7 +424,6 @@ PROGRAM TESTGPC
 901 FORMAT (/A)
 902 FORMAT (99A)
 903 FORMAT (A, I0, A, I0, A)
-904 FORMAT (I)
 905 FORMAT (A, I0, A, I0, A, I0, A)
 906 FORMAT (A, I0, A, I0, A, I0, A, I0, A)
 907 FORMAT (A, I0, A, I0, A, I0, A, I0, A, /)
