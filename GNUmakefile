@@ -6,9 +6,9 @@ VPATH = .
 
 Fortran_sources := $(sort testgpc.f testgpc_1.f module_gpc.f gemprm.f cfl_clos.f msvcrt.f)
 
-C_sources = C_fopen.c gpc_2_33.c
+C_sources = C_fopen.c gpc_2_33.c gpc_free_vertex.c gpc_cvlist.c gpc_gvlist.c gpc_gvarea.c cgr_centroid.c
 
-lib_list = 
+lib_list = jumble
 
 # 2. Objects and executable file
 
@@ -31,7 +31,7 @@ all: ${execut} log
 ${execut}: ${objects}
 
 depend ${VPATH}/depend.mk:
-	${CC} -MM ${C_sources} -MF ${VPATH}/depend.mk
+	${CC} -MM ${C_sources} >${VPATH}/depend.mk
 	makedepf90 $(addprefix -D, ${cpp_macros}) -free -Wmissing -Wconfused -I${VPATH} -nosrc $(addprefix -u , intrinsic ${lib_list}) ${Fortran_sources} >>${VPATH}/depend.mk
 
 

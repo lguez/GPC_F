@@ -4,6 +4,8 @@ PROGRAM TESTGPC
 
   use, intrinsic:: ISO_C_BINDING
 
+  use cfl_clos_m, only: cfl_clos
+  use jumble, only: new_unit
   USE TESTGPC_1, only: F_GPC_POLYGON, F_GPC_VERTEX_LIST, F_gpc_op
   USE module_GPC, only: C_GPC_POLYGON, C_GPC_VERTEX_LIST, C_GPC_VERTEX
 
@@ -51,7 +53,7 @@ PROGRAM TESTGPC
   INTEGER IFILENUM
   LOGICAL LFILENUM(200)
   real all, area, CLIP, G_FALSE, G_NORMAL, G_TRUE, subject
-  integer i, iresult, iret
+  integer i, iresult
   COMMON /FILEINFO/IFILENUM, LFILENUM
 
   LOGICAL DEBUG
@@ -293,7 +295,7 @@ PROGRAM TESTGPC
                 " or a filename to read points from: "
 
            READ(*, 902) filnam
-           CALL st_numb(filnam, nverts, ier)
+           read(unit = filnam, fmt = *, iostat = ier) nverts
 
            WRITE(25, *)'TESTGPC: @11 - nverts 2 = ', nverts, ier
 
@@ -324,23 +326,24 @@ PROGRAM TESTGPC
                    "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
                    "three points."
 
-              call FL_SOPN(filnam, ifpread, ier)
+              call new_unit(ifpread)
+              open(ifpread, file = filnam, action = "read", status = "old", &
+                   position = "rewind", iostat = ier)
 
               WRITE(25, *)'TESTGPC: @11 fpread = ', ifpread
 
               IF (ier == G_NORMAL) THEN
-                 CALL cfl_trln(ifpread, 80, buffer, ier)
+                 read(ifpread, fmt = *) buffer
 
                  DO WHILE (ier == 0)
                     nverts = nverts + 1
                     READ(buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
 
-                    CALL cfl_trln(ifpread, 80, buffer, ier)
+                    read(ifpread, fmt = *) buffer
                  END DO
 
                  WRITE(*, 910) "EOF reached in file ", filnam, &
                       ", number of vertices = ", nverts
-                 ! CALL cfl_clos(ifpread, ier)
                  close(ifpread)
 
                  IF (C_verticies%num_vertices /= 0) &

@@ -1,49 +1,44 @@
-SUBROUTINE cfl_clos(fptr,iret)
-! --------------------------------------------------
-!/************************************************************************
-! * cfl_clos        *
-! *         *
-! * This function closes the specified file.  Closing a file that has *
-! * been opened as a temporary file will cause the file to be removed. *
-! *         *
-! * cfl_clos ( fptr, iret )      *
-! *         *
-! * Input parameters:       *
-! * *fptr  FILE  File pointer   *
-! *         *
-! * Output parameters:       *
-! * *iret  int  Return code   *
-! *      -6 = No file has been opened *
-! **         *
+module cfl_clos_m
 
-!USE GEMINC
-USE GEMPRM
-USE MSVCRT
-use, intrinsic:: ISO_C_BINDING
+  IMPLICIT NONE
 
-IMPLICIT NONE
-! - - - arg types - - -
-  type(C_PTR) :: fptr
-  INTEGER :: iret                                                     
-! - - - local declarations - - -
-  INTEGER :: ier,errno,ifptr,fpclose
+contains
 
-! - - - begin - - -
-  iret = 0
-  ifptr = transfer(fptr,0_C_INTPTR_T)
+  SUBROUTINE cfl_clos(fptr, iret)
 
-  IF ( ifptr == 0 ) THEN
-    iret = -6
-    GOTO 9999
-  END IF
+    ! This function closes the specified file. Closing a file that has
+    ! been opened as a temporary file will cause the file to be
+    ! removed.
 
-  fpclose = fclose(fptr)
-  ier = transfer(fpclose,0_C_INTPTR_T)
+    USE MSVCRT, only: fclose
+    use, intrinsic:: ISO_C_BINDING
 
-  IF ( ier /= 0 ) CALL cfl_iret( errno, iret, ier )
+    ! Input parameters: 
+    ! fptr FILE File pointer 
 
-  9999 CONTINUE
+    ! Output parameters: 
+    ! iret int Return code 
+    ! -6 = No file has been opened 
 
-  RETURN
+    ! - - - arg types - - -
+    type(C_PTR) :: fptr
+    INTEGER :: iret
+    ! - - - local declarations - - -
+    INTEGER ifptr, fpclose
 
-END SUBROUTINE
+    ! - - - begin - - -
+    iret = 0
+    ifptr = transfer(fptr, 0_C_INTPTR_T)
+
+    IF (ifptr == 0) THEN
+       iret = -6
+       GOTO 9999
+    END IF
+
+    fpclose = fclose(fptr)
+
+9999 CONTINUE
+
+  END SUBROUTINE cfl_clos
+
+end module cfl_clos_m
