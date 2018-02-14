@@ -6,7 +6,9 @@ PROGRAM TESTGPC
 
   use cfl_clos_m, only: cfl_clos
   use jumble, only: new_unit
-  USE module_GPC, only: C_GPC_POLYGON, C_GPC_VERTEX_LIST, C_GPC_VERTEX
+  USE module_GPC, only: C_GPC_POLYGON, C_GPC_VERTEX_LIST, gpc_read_polygon, &
+       gpc_write_polygon, gpc_add_contour, gpc_polygon_clip, gpc_free_polygon, &
+       gpc_free_vertex, gpc_cvlist, gpc_gvlist, gpc_gvarea
 
   implicit none
 

@@ -1,6 +1,3 @@
-//#include "geminc.h"
-//#include "gemprm.h"
-
 #define	RMISSD	( -9999.0F )	/* Missing data value		 */
 
 #define	G_ABS(a)	( ( (a) >= 0.0F  ) ? (a) : -(a) )

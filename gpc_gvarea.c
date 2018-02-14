@@ -1,5 +1,3 @@
-//#include "geminc.h"
-//#include "gemprm.h"
 #include "gpc.h"
 
 #define	G_MALLOC(p,type,np,str)  { if ((np) > 0) { \
