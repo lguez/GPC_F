@@ -1,4 +1,3 @@
-! --------------------------------------------------
 SUBROUTINE cfl_clos(fptr,iret)
 ! --------------------------------------------------
 !/************************************************************************
@@ -20,7 +19,7 @@ SUBROUTINE cfl_clos(fptr,iret)
 !USE GEMINC
 USE GEMPRM
 USE MSVCRT
-use ISO_C_BINDING
+use, intrinsic:: ISO_C_BINDING
 
 IMPLICIT NONE
 ! - - - arg types - - -
@@ -48,5 +47,3 @@ IMPLICIT NONE
   RETURN
 
 END SUBROUTINE
-!INCLUDE 'C2F_LIB.F90'  
-!  0 Errors detected

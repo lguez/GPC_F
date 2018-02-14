@@ -38,10 +38,7 @@ PROGRAM TESTGPC
   CHARACTER(LEN=256, KIND=C_CHAR) filnam
   CHARACTER(LEN=80) buffer
   CHARACTER(LEN=8) errgrp
-
   type(C_PTR) fpopen
-  INTEGER(C_INTPTR_T) iifpo
-
   type(C_GPC_POLYGON) C_subject_polygon, C_clip_polygon, C_result_polygon
   type(C_GPC_VERTEX_LIST) C_verticies
 
@@ -101,10 +98,6 @@ PROGRAM TESTGPC
   readholeflag = 0
   which = 0
   Call C_fopen(fpopen, filnam, mode, ier)
-
-  iifpo = transfer(fpopen, 0_C_INTPTR_T)
-
-  WRITE(25, *)'TESTGPC: READ SUBJECT POLYGON ', iifpo
   CALL gpc_read_polygon(fpopen, readholeflag, C_subject_polygon)
 
   fpclose = fclose(fpopen)
@@ -116,9 +109,6 @@ PROGRAM TESTGPC
   readholeflag = 0
   which = 1
   Call C_fopen(fpopen, filnam, mode, ier)
-  iifpo = transfer(fpopen, 0_C_INTPTR_T)
-
-  WRITE(25, *)'TESTGPC READ CLIP POLYGON ', iifpo
   CALL gpc_read_polygon(fpopen, readholeflag, C_clip_polygon)
 
   fpclose = fclose(fpopen)
@@ -140,7 +130,7 @@ PROGRAM TESTGPC
      WRITE(*, 902) " 99 = HELP on INPUT FILE FORMATS "
      WRITE(*, 902) ""
      WRITE(*, 902) "Select a subroutine number or type EXIT: "
-     READ(*, 902) select
+     READ *, select
 
      SELECT CASE (select(1:1))
 
@@ -148,8 +138,7 @@ PROGRAM TESTGPC
         cont = G_TRUE
 
      CASE DEFAULT
-        ! numsub = atoi(select)
-        CALL ST_NUMB(select, numsub, IRET)
+        read(unit = select, fmt = *) numsub
 
         write(25, *)'****numsub = ', numsub
 
@@ -175,7 +164,6 @@ PROGRAM TESTGPC
         read *, which
 
         Call C_fopen(fpopen, filnam, mode, ier)
-        iifpo = transfer(fpopen, 0_C_INTPTR_T)
 
         WRITE(25, *)'TESTGPC IER = ', IER, IFILENUM
 
@@ -345,7 +333,6 @@ PROGRAM TESTGPC
 
                  DO WHILE (ier == 0)
                     nverts = nverts + 1
-                    ! WRITE(25, *)'TESTGPC: read buffer = ', nverts, buffer
                     READ(buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
 
                     CALL cfl_trln(ifpread, 80, buffer, ier)

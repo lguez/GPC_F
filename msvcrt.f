@@ -1,5 +1,5 @@
 module MSVCRT
-   use ISO_C_BINDING
+   use, intrinsic:: ISO_C_BINDING
    implicit none
 !   private
 !   public fopen,fclose, malloc, free
