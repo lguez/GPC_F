@@ -6,10 +6,14 @@ PROGRAM TESTGPC
 
   use cfl_clos_m, only: cfl_clos
   use jumble, only: new_unit
-  USE TESTGPC_1, only: F_GPC_POLYGON, F_GPC_VERTEX_LIST, F_gpc_op
   USE module_GPC, only: C_GPC_POLYGON, C_GPC_VERTEX_LIST, C_GPC_VERTEX
 
   implicit none
+
+  INTEGER, PARAMETER :: SUBJECT=0
+  INTEGER, PARAMETER :: CLIP=1
+  INTEGER, PARAMETER :: IRESULT=2
+  INTEGER, PARAMETER :: ALL=3
 
   interface
      subroutine C_fopen(ifp, filename, mode, ier) bind(C, name='C_fopen')
@@ -47,13 +51,10 @@ PROGRAM TESTGPC
   INTEGER(SELECTED_INT_KIND(4)), PARAMETER:: GPC_DIFF = 0, GPC_INT = 1, &
        GPC_XOR = 2, GPC_UNION = 3
 
-  TYPE(F_GPC_POLYGON) subject_polygon, clip_polygon, result_polygon
-  TYPE(F_GPC_VERTEX_LIST) contour
-
   INTEGER IFILENUM
   LOGICAL LFILENUM(200)
-  real all, area, CLIP, G_FALSE, G_NORMAL, G_TRUE, subject
-  integer i, iresult
+  real area, G_FALSE, G_NORMAL, G_TRUE
+  integer i
   COMMON /FILEINFO/IFILENUM, LFILENUM
 
   LOGICAL DEBUG
@@ -80,12 +81,6 @@ PROGRAM TESTGPC
   C_clip_polygon%num_contours = 0
   C_result_polygon%num_contours = 0
   C_verticies%num_vertices = 0
-
-  subject_polygon%num_contours = 0
-  subject_polygon%hole = 0
-  clip_polygon%num_contours = 0
-  result_polygon%num_contours = 0
-  contour%num_vertices = 0
 
   nverts = 0
 
@@ -394,7 +389,6 @@ PROGRAM TESTGPC
   IF (C_clip_polygon%num_contours /= 0) CALL gpc_free_polygon(C_clip_polygon)
   IF (C_result_polygon%num_contours /= 0) &
        CALL gpc_free_polygon(C_result_polygon)
-  IF (contour%num_vertices /= 0) DEALLOCATE(contour%vertex)
 
 901 FORMAT (/A)
 902 FORMAT (99A)

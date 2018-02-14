@@ -6,5 +6,4 @@ gpc_gvlist.o: gpc_gvlist.c gpc.h
 gpc_gvarea.o: gpc_gvarea.c gpc.h
 cgr_centroid.o: cgr_centroid.c
 cfl_clos.o : msvcrt.o 
-testgpc.o : module_gpc.o testgpc_1.o cfl_clos.o 
-testgpc_1.o : module_gpc.o gemprm.o 
+testgpc.o : module_gpc.o cfl_clos.o 

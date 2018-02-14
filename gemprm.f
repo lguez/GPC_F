@@ -1,6 +1,6 @@
 MODULE GEMPRM
+
   ! global declarations
-  !use, intrinsic :: ISO_C_BINDING
 
   ! --------------------------------------------------
 
