@@ -5,82 +5,40 @@ PROGRAM TESTGPC
   use, intrinsic:: ISO_C_BINDING
 
   use jumble, only: new_unit
-  USE module_GPC, only: C_GPC_POLYGON, gpc_read_polygon, gpc_polygon_clip, &
-       gpc_free_polygon
+  USE module_GPC, only: C_GPC_POLYGON, gpc_polygon_clip, gpc_free_polygon
   use shapelib, only: shpfileobject, shpobject
   use shapelib_03, only: shp_open_03, shp_read_object_03
 
   implicit none
 
-  interface
-     subroutine C_fopen(ifp, filename, mode, ier) bind(C, name='C_fopen')
-       import
-       implicit none
-       type(C_PTR) ifp
-       character(KIND=C_CHAR), intent(IN):: filename(*)
-       character(KIND=C_CHAR), intent(IN):: mode(*)
-       integer(C_int), intent(inout):: ier
-     end subroutine C_fopen
-
-     function fclose(stream) bind(C, name='fclose')
-       import
-       implicit none
-       integer(C_INT) fclose
-       type(C_PTR), value:: stream
-     end function fclose
-  end interface
-
-  INTEGER ier, operation, readholeflag
-  INTEGER fpclose
-
-  CHARACTER(LEN=4, KIND=C_CHAR) mode
-  CHARACTER(LEN=256, KIND=C_CHAR) filnam
-  type(C_PTR) fpopen
+  INTEGER operation
+  CHARACTER(LEN=256) filnam
   type(C_GPC_POLYGON) C_subject_polygon, C_clip_polygon, C_result_polygon
-
   INTEGER(SELECTED_INT_KIND(4)), PARAMETER:: GPC_DIFF = 0, GPC_INT = 1, &
        GPC_XOR = 2, GPC_UNION = 3
-
   TYPE(shpfileobject) hshp
   TYPE(shpobject) psobject
 
   !-------------------------------------------------------------------------
 
-  print *, 'START TESTGPC'
-
-  C_subject_polygon%num_contours = 0
-  C_subject_polygon%hole = C_NULL_PTR
-  C_clip_polygon%num_contours = 0
-  C_result_polygon%num_contours = 0
-
   ! filnam = 'arrows.gpf'
   filnam = 'britain.gpf' // C_NULL_CHAR
-  mode = 'r'// C_NULL_CHAR
 
-  readholeflag = 0
   call shp_open_03(filnam, "rb", hshp)
   call shp_read_object_03(hshp, 0, psobject)
-  Call C_fopen(fpopen, filnam, mode, ier)
-  CALL gpc_read_polygon(fpopen, readholeflag, C_subject_polygon)
-
-  fpclose = fclose(fpopen)
-
-  print *, 'TESTGPC: Subject Contours = ', C_subject_polygon%num_contours
-
+  C_subject_polygon%num_contours = 1
+  C_subject_polygon%hole = C_NULL_PTR
+  
   ! filnam = 'britain.gpf
   filnam = 'arrow.gpf' // C_NULL_CHAR
-  readholeflag = 0
-  Call C_fopen(fpopen, filnam, mode, ier)
-  CALL gpc_read_polygon(fpopen, readholeflag, C_clip_polygon)
+  C_clip_polygon%num_contours = 0
 
-  fpclose = fclose(fpopen)
-
-  print *, 'TESTGPC: Clip Contours = ', C_clip_polygon%num_contours
   print *, "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
        "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
   read *, operation
   print *, 'TESTGPC: operation = ', operation
   print *, 'TESTGPC: calling gpc_polygon_clip...'
+  C_result_polygon%num_contours = 0
   CALL gpc_polygon_clip(operation, C_subject_polygon, C_clip_polygon, &
        C_result_polygon)
   IF (C_subject_polygon%num_contours /= 0) &

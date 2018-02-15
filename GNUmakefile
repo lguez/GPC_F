@@ -4,7 +4,7 @@
 
 VPATH = .
 Fortran_sources := $(sort testgpc.f module_gpc.f)
-C_sources = C_fopen.c gpc_2_33.c
+C_sources = gpc_2_33.c
 lib_list = shapelib_03 fortrangis fortranc shp jumble
 
 # 2. Objects and executable file
