@@ -3,11 +3,8 @@
 # 1. Source files and libraries
 
 VPATH = .
-
-Fortran_sources := $(sort testgpc.f module_gpc.f cfl_clos.f msvcrt.f)
-
+Fortran_sources := $(sort testgpc.f module_gpc.f)
 C_sources = C_fopen.c gpc_2_33.c
-
 lib_list = shapelib_03 fortrangis fortranc shp jumble
 
 # 2. Objects and executable file
@@ -32,7 +29,7 @@ ${execut}: ${objects}
 
 depend ${VPATH}/depend.mk:
 	${CC} -MM ${C_sources} >${VPATH}/depend.mk
-	makedepf90 $(addprefix -D, ${cpp_macros}) -free -Wmissing -Wconfused -I${VPATH} -nosrc $(addprefix -u , intrinsic ${lib_list}) ${Fortran_sources} >>${VPATH}/depend.mk
+	makedepf90 $(addprefix -D, ${cpp_macros}) -free -Wmissing -Wconfused -I${VPATH} -nosrc $(addprefix -u , intrinsic shapelib ${lib_list}) ${Fortran_sources} >>${VPATH}/depend.mk
 
 
 clean:
