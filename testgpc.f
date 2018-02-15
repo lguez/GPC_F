@@ -38,8 +38,7 @@ PROGRAM TESTGPC
   end interface
 
   INTEGER ii, numsub, which, ier, operation, readholeflag
-  integer writeholeflag
-  INTEGER nverts, hole
+  INTEGER nverts
   REAL xv(80000), yv(80000)
   INTEGER fpclose, ifpread
 
@@ -54,9 +53,6 @@ PROGRAM TESTGPC
        GPC_XOR = 2, GPC_UNION = 3
 
   real area
-  INTEGER ::  G_NORMAL = 0
-  INTEGER ::  G_TRUE =    1  ! TRUE 
-  INTEGER ::  G_FALSE =    0  ! FALSE 
   TYPE(shpfileobject) hshp
   TYPE(shpobject) psobject
 
@@ -113,107 +109,6 @@ PROGRAM TESTGPC
   READ *, numsub
 
   select case (numsub)
-  case (1)
-     print *, "Make sure your polygon file is in the proper format:"
-     print *, "<num-contours>"
-     print *, "<num-vertices-in-first-contour>"
-     print *, "[<first-contour-hole-flag>]"
-     print *, "<vertex-list>"
-     print *, "<num-vertices-in-second-contour>"
-     print *, "[<second-contour-hole-flag>]"
-     print *, "<vertex-list> "
-     print *, "etc."
-     print *, "Enter filename to read polygon from: "
-     READ *, filnam
-     print *, "Enter whether file format contains hole flags (", &
-          G_FALSE, "-FALSE, ", G_TRUE, "-TRUE):"
-     read *, readholeflag
-     print *, "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
-          "-CLIP):"
-     read *, which
-
-     Call C_fopen(fpopen, filnam, mode, ier)
-
-     print *, 'TESTGPC IER = ', IER
-
-     IF (ier == G_NORMAL) THEN
-
-        IF (which == SUBJECT) THEN
-           print *, 'TESTGPC: READ SUBJECT POLYGON'
-           CALL gpc_read_polygon(fpopen, readholeflag, C_subject_polygon)
-
-        ELSE IF (which == CLIP) THEN
-           print *, 'TESTGPC READ CLIP POLYGON'
-           CALL gpc_read_polygon(fpopen, readholeflag, C_clip_polygon)
-
-        ELSE
-           print *, "Invalid polygon type"
-        END IF
-
-        CALL cfl_clos(fpopen, ier)
-
-     ELSE
-        print *, "Unable to open file ", filnam
-     END IF
-  case (2)
-     print *, "Enter filename to write polygon to: "
-     read *, filnam
-     print *, "Enter the write hole flag (", G_FALSE, "-FALSE, ", &
-          G_TRUE, "-TRUE):"
-     read *, writeholeflag
-     print *, "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
-          "-CLIP, ", IRESULT, "-RESULT):"
-     read *, which
-
-     print *, 'TESTGPC: attempting to write a polygon...'
-     mode = 'w'// C_NULL_CHAR
-     filnam=TRIM(ADJUSTL(filnam))//char(0)
-     Call C_fopen(fpopen, filnam, mode, ier)
-
-     IF (ier == G_NORMAL) THEN
-        writeholeflag = 0
-
-        IF (which == SUBJECT) THEN
-           print *, 'TESTGPC: write subject'
-           CALL gpc_write_polygon(fpopen, writeholeflag, C_subject_polygon)
-        ELSE IF (which == CLIP) THEN
-           print *, 'TESTGPC: write clip'
-           CALL gpc_write_polygon(fpopen, writeholeflag, C_clip_polygon)
-        ELSE IF (which == IRESULT) THEN
-           print *, 'TESTGPC: write result'
-           CALL gpc_write_polygon(fpopen, writeholeflag, C_result_polygon)
-        ELSE
-           print *, "Invalid polygon type"
-        END IF
-
-        CALL cfl_clos(fpopen, ier)
-
-     ELSE
-        print *, "Unable to open file ", filnam
-     END IF
-  case (3)
-
-     IF (nverts == 0) THEN
-        print *, "Must first create a vertex list (option 11)"
-     ELSE
-        print *, "Enter which polygon (", SUBJECT, "-SUBJECT, ", CLIP, &
-             "-CLIP, ", IRESULT, "-RESULT) to add vertex list to:"
-        read *, which
-        print *, "Enter the hole flag (", G_TRUE, "-HOLE, ", G_FALSE, &
-             "-NOT A HOLE):"
-        read *, hole
-
-        ! hole = 0
-
-        IF (which == SUBJECT) THEN
-           CALL gpc_add_contour(C_subject_polygon, C_verticies, hole)
-        ELSE IF (which == CLIP) THEN
-           CALL gpc_add_contour(C_clip_polygon, C_verticies, hole)
-        ELSE
-           print *, "Invalid polygon"
-        END IF
-
-     END IF
   case (4)
      print *, "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
           "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
@@ -240,73 +135,47 @@ PROGRAM TESTGPC
      END IF
   case (11)
      nverts = 0
+     WRITE(*, *) "Enter either the number of points in polygon ", &
+          " (to be followed by entering the points), ", &
+          " or a filename to read points from: "
+     read *, filnam
+     read(unit = filnam, fmt = *, iostat = ier) nverts
 
-     print *, 'TESTGPC: @11 - nverts 1 = ', nverts
-     if (nverts == 0) then
-        WRITE(*, *) "Enter either the number of points in polygon ", &
-             " (to be followed by entering the points), ", &
-             " or a filename to read points from: "
-
-        read *, filnam
-        read(unit = filnam, fmt = *, iostat = ier) nverts
-
-        print *, 'TESTGPC: @11 - nverts 2 = ', nverts, ier
-
-        IF (ier == 0) THEN
-
-           DO ii = 1, nverts
-              READ *, xv(ii), yv(ii)
-           END DO
-
-           IF (C_verticies%num_vertices /= 0) &
-                call gpc_free_vertex(C_verticies)
-
-           CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
-
-        ELSE
-
-           nverts = 0
-
-           PRINT *, "Note that the file format is simply a list of ", &
-                "coordinate pairs separated by whitespace. The number of ", &
-                "points will be counted automatically. For instance, a ", &
-                "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
-                "three points."
-           call new_unit(ifpread)
-           open(ifpread, file = filnam, action = "read", status = "old", &
-                position = "rewind", iostat = ier)
-
-           print *, 'TESTGPC: @11 fpread = ', ifpread
-
-           IF (ier == G_NORMAL) THEN
-              read(ifpread, fmt = *) buffer
-
-              DO WHILE (ier == 0)
-                 nverts = nverts + 1
-                 READ(buffer, '(F20.15, 2x, F20.15)') xv(nverts), yv(nverts)
-
-                 read(ifpread, fmt = *) buffer
-              END DO
-
-              print *, "EOF reached in file ", filnam, &
-                   ", number of vertices = ", nverts
-              close(ifpread)
-
-              IF (C_verticies%num_vertices /= 0) &
-                   call gpc_free_vertex(C_verticies)
-
-              CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
-
-           END IF
-
-        END IF
-     ELSE
+     IF (ier == 0) THEN
+        DO ii = 1, nverts
+           READ *, xv(ii), yv(ii)
+        END DO
 
         IF (C_verticies%num_vertices /= 0) call gpc_free_vertex(C_verticies)
-
         CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
+     ELSE
+        nverts = 0
+        PRINT *, "Note that the file format is simply a list of ", &
+             "coordinate pairs separated by whitespace. The number of ", &
+             "points will be counted automatically. For instance, a ", &
+             "file containing: 0 0 0 1 1 1 yields a vertex list of ", &
+             "three points."
+        call new_unit(ifpread)
+        open(ifpread, file = filnam, action = "read", status = "old", &
+             position = "rewind", iostat = ier)
+        print *, 'TESTGPC: @11 fpread = ', ifpread
 
-     ENDIF
+        IF (ier == 0) THEN
+           read(ifpread, fmt = *) buffer
+
+           DO WHILE (ier == 0)
+              nverts = nverts + 1
+              READ(buffer, fmt = *) xv(nverts), yv(nverts)
+              read(ifpread, fmt = *) buffer
+           END DO
+
+           print *, "EOF reached in file ", filnam, &
+                ", number of vertices = ", nverts
+           close(ifpread)
+           IF (C_verticies%num_vertices /= 0) call gpc_free_vertex(C_verticies)
+           CALL gpc_cvlist(nverts, xv, yv, C_verticies, ier)
+        END IF
+     END IF
   case (12)
      CALL gpc_gvlist(C_verticies, nverts, xv, yv, ier)
      print *, "gpc_gvlist, ier = ", ier
