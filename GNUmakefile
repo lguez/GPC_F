@@ -8,7 +8,7 @@ Fortran_sources := $(sort testgpc.f module_gpc.f cfl_clos.f msvcrt.f)
 
 C_sources = C_fopen.c gpc_2_33.c gpc_free_vertex.c gpc_cvlist.c gpc_gvlist.c gpc_gvarea.c cgr_centroid.c
 
-lib_list = jumble
+lib_list = shapelib_03 fortrangis fortranc shp jumble
 
 # 2. Objects and executable file
 
