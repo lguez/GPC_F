@@ -8,7 +8,7 @@ module gpc_f
 
   private
   public GPC_VERTEX, GPC_VERTEX_LIST, GPC_POLYGON, gpc_polygon_clip, &
-       gpc_free_polygon
+       gpc_free_polygon, GPC_OP, GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
 
   type, bind(c):: gpc_vertex
      real(c_double) x, y

@@ -18,6 +18,8 @@ mode = debug
 include ${general_compiler_options_dir}/${FC}_${mode}.mk
 FFLAGS += -fno-underscoring
 
+CFLAGS = -std=c99 -pedantic -g3 -W -Wall -Wdiv-by-zero -Wmultichar -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wmissing-format-attribute -Wpacked -Wredundant-decls -Wnested-externs -Wunreachable-code -Winline -Wlong-long -Wdisabled-optimization -fexceptions
+
 # 4. Rules
 
 SHELL = bash
