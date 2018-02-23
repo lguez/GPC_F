@@ -1,0 +1,68 @@
+[
+    {
+	"title": "Left_minus_right",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_left",
+	    "$input_dir/square_right"
+	],
+	"description": "Left square minus right square.",
+	"input": "0\n"
+    },
+    {
+	"title": "Squares_inters",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_left",
+	    "$input_dir/square_right"
+	],
+	"description": "Intersection of two squares.",
+	"input": "1\n"
+    },
+    {
+	"title": "Squares_xor",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_left",
+	    "$input_dir/square_right"
+	],
+	"description": "Exclusive-or of two squares.",
+	"input": "2\n"
+    },
+    {
+	"title": "Squares_union",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_left",
+	    "$input_dir/square_right"
+	],
+	"description": "Union of two squares.",
+	"input": "3\n"
+    },
+    {
+	"title": "Right_minus_left",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_right",
+	    "$input_dir/square_left"
+	],
+	"description": "Right square minus left square.",
+	"input": "0\n"
+    },
+    {
+	"title": "Commut",
+	"args":
+	[
+	    "$compil_prod_dir/testgpc",
+	    "$input_dir/square_right",
+	    "$input_dir/square_left"
+	],
+	"description": "Intersection of two squares again, but inverting the order of squares, in order to check commutativity.",
+	"input": "1\n"
+    }
+]

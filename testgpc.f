@@ -46,8 +46,8 @@ PROGRAM TESTGPC
   clip_polygon = gpc_polygon(num_contours = 1, hole = c_null_ptr, &
        contour = c_loc(l_CLIP))
 
-  print *, "Enter operation (", GPC_DIFF, "-GPC_DIFF, ", GPC_INT, &
-       "-GPC_INT, ", GPC_XOR, "-GPC_XOR, ", GPC_UNION, "-GPC_UNION):"
+  print *, "Enter operation (", GPC_DIFF, "difference,", GPC_INT, &
+       "intersection,", GPC_XOR, "exclusive or,", GPC_UNION, "union):"
   read *, set_operation
   CALL gpc_polygon_clip(set_operation, subject_polygon, clip_polygon, &
        result_polygon)
