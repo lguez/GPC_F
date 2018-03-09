@@ -3,14 +3,14 @@
 # 1. Source files and libraries
 
 VPATH = .
-Fortran_sources := $(sort testgpc.f gpc_f.f)
+Fortran_sources := $(sort test_GPC.f gpc_f.f)
 C_sources = gpc_2_33.c
-lib_list = shapelib_03 fortrangis fortranc shp jumble
+lib_list = shapelib_03 fortrangis fortranc shp jumble nr_util
 
 # 2. Objects and executable file
 
 objects := $(Fortran_sources:.f=.o) $(C_sources:.c=.o)
-execut = testgpc
+execut = test_GPC
 
 # 3. Compiler-dependent part
 
