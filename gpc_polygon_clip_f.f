@@ -13,6 +13,12 @@ module gpc_polygon_clip_f_m
      logical, allocatable:: hole(:) ! (nparts)
   end type polygon
 
+  ENUM, BIND(C)
+     ENUMERATOR GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
+  END ENUM
+
+  integer, parameter:: GPC_OP = kind(GPC_DIFF)
+
   private polyline
   
 contains
@@ -28,27 +34,49 @@ contains
 
     use, intrinsic:: ISO_C_BINDING
 
-    USE GPC_f, only: GPC_VERTEX, GPC_VERTEX_LIST, GPC_POLYGON, &
-         gpc_polygon_clip, GPC_OP
-
     INTEGER(GPC_OP), intent(in):: set_op ! set operation
     type(polygon), intent(in):: subj_pol, clip_pol ! subject and clip polygons
     type(polygon), intent(out):: res_pol ! result polygon
 
     ! Local:
 
-    integer i, j
-    
-    type(GPC_POLYGON) spc, cpc, rpc
-    ! subject, clip and result polygons, C-interoperable
+    type, bind(c):: gpc_vertex
+       real(c_double) x, y
+    end type gpc_vertex
+
+    type, bind(c):: gpc_vertex_list
+       integer(c_int) num_vertices
+       type(c_ptr) vertex
+    end type gpc_vertex_list
+
+    type, bind(c):: gpc_polygon
+       integer(c_int) num_contours
+       type(c_ptr) hole, contour
+    end type gpc_polygon
 
     type gpc_vertex_list_f
        type(GPC_VERTEX), allocatable:: v(:)
     end type gpc_vertex_list_f
 
+    interface
+       subroutine gpc_polygon_clip(set_operation, subject_polygon, &
+            clip_polygon, result_polygon) bind(c)
+         import gpc_op, gpc_polygon
+         implicit none
+         integer(gpc_op), value, intent(in):: set_operation
+         type(gpc_polygon), intent(inout):: subject_polygon, clip_polygon
+         type(gpc_polygon), intent(out):: result_polygon
+       end subroutine gpc_polygon_clip
+    end interface
+
+    integer i, j
+
+    type(GPC_POLYGON) spc, cpc, rpc
+    ! subject, clip and result polygons, C-interoperable
+
     type(gpc_vertex_list_f), allocatable, target:: l_subj_f(:), l_clip_f(:)
     ! subject and clip vertex lists, not C-interoperable
-    
+
     type(GPC_VERTEX_LIST), allocatable, target:: l_subj_c(:), l_clip_c(:)
     type(GPC_VERTEX_LIST), pointer:: l_res_c(:)
     ! subject, clip and result vertex lists, C-interoperable
