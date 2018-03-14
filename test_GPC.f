@@ -18,11 +18,11 @@ PROGRAM TEST_GPC
 
   INTEGER(GPC_OP) set_op
   integer i, ishape
-  type(POLYGON) subject_pol, clip_pol, result_pol
+  type(POLYGON) subj_pol, clip_pol, res_pol
   TYPE(shpfileobject) hshp
   TYPE(shpobject) psobject
   character(len = :), allocatable:: filename
-  integer, allocatable:: pan_part_start(:) ! (result_pol%nparts)
+  integer, allocatable:: pan_part_start(:) ! (res_pol%nparts)
   REAL(c_double), allocatable:: padf(:, :) ! (2, 0:)
 
   !-------------------------------------------------------------------------
@@ -34,7 +34,7 @@ PROGRAM TEST_GPC
   call shpclose(hshp)
   call assert(psobject%nparts >= 1, "psobject%nparts >= 1")
   call assert(psobject%panpartstart(1) == 0, "psobject%panpartstart(1)")
-  subject_pol = shpobj2pol(psobject)
+  subj_pol = shpobj2pol(psobject)
   call shpdestroyobject(psobject)
 
   call get_command_arg_dyn(2, filename, &
@@ -50,25 +50,24 @@ PROGRAM TEST_GPC
   print *, "Enter operation (", GPC_DIFF, "difference,", GPC_INT, &
        "intersection,", GPC_XOR, "exclusive or,", GPC_UNION, "union):"
   read *, set_op
-  CALL gpc_polygon_clip_f(set_op, subject_pol, clip_pol, result_pol)
-  print *, "result_pol%nparts = ", result_pol%nparts
-  print *, "result_pol%hole = ", result_pol%hole
-  print *, "result_pol%part%n_points = ", result_pol%part%n_points
+  CALL gpc_polygon_clip_f(set_op, subj_pol, clip_pol, res_pol)
+  print *, "res_pol%nparts = ", res_pol%nparts
+  print *, "res_pol%hole = ", res_pol%hole
+  print *, "res_pol%part%n_points = ", res_pol%part%n_points
 
-  if (result_pol%nparts /= 0) then
-     allocate(pan_part_start(result_pol%nparts))
+  if (res_pol%nparts /= 0) then
+     allocate(pan_part_start(res_pol%nparts))
      pan_part_start(1) = 0
-     allocate(padf(2, 0:sum(result_pol%part%n_points) - 1))
+     allocate(padf(2, 0:sum(res_pol%part%n_points) - 1))
      call shp_create_03("test_GPC", shpt_polygon, hshp)
 
-     do i = 2, result_pol%nparts
-        pan_part_start(i) = pan_part_start(i - 1) &
-             + result_pol%part(i - 1)%n_points
+     do i = 2, res_pol%nparts
+        pan_part_start(i) = pan_part_start(i - 1) + res_pol%part(i - 1)%n_points
      end do
 
-     do i = 1, result_pol%nparts
+     do i = 1, res_pol%nparts
         padf(:, pan_part_start(i):pan_part_start(i) &
-             + result_pol%part(i)%n_points - 1) = result_pol%part(i)%points
+             + res_pol%part(i)%n_points - 1) = res_pol%part(i)%points
      end do
 
      call shp_append_object_03(ishape, hshp, shpt_polygon, padf, pan_part_start)
