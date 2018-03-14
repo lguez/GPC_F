@@ -3,7 +3,7 @@
 # 1. Source files
 
 VPATH = .
-sources = gpc_polygon_clip_f.f shpobj2pol.f
+sources = gpc_polygon_clip_f.f shpobj2pol.f gpc_f.f
 
 # 2. Objects and libraries
 
@@ -21,7 +21,7 @@ include ${general_compiler_options_dir}/${FC}_${mode}.mk
 SHELL = bash
 .DELETE_ON_ERROR:
 .PHONY: all clean clobber depend
-all: ${lib_dyn} ${lib_stat} log
+all: ${lib_stat} log
 
 ${lib_dyn}: ${objects}
 	$(FC) $(LDFLAGS) ${ldflags_lib_dyn} $^ -o $@

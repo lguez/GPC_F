@@ -3,7 +3,7 @@
 # 1. Executable file and libraries
 
 execut= test_GPC
-lib_list = shapelib_03 fortrangis fortranc shp contour_531 jumble nr_util
+lib_list = shapelib_03 fortrangis fortranc shp contour_531 jumble nr_util GPC_F GPC
 
 # 2. Compiler-dependent part
 
