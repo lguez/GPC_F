@@ -3,7 +3,7 @@
 # 1. Source files and libraries
 
 VPATH = .
-Fortran_sources := $(sort test_GPC.f gpc_f.f gpc_polygon_clip_f.f)
+Fortran_sources := $(sort test_GPC.f gpc_f.f gpc_polygon_clip_f.f shpobj2pol.f)
 C_sources = gpc_2_33.c
 lib_list = shapelib_03 fortrangis fortranc shp contour_531 jumble nr_util
 

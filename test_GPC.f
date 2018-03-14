@@ -12,11 +12,12 @@ PROGRAM TEST_GPC
        shpdestroyobject
   use shapelib_03, only: shp_open_03, shp_read_object_03, shp_create_03, &
        shp_append_object_03
+  use shpobj2pol_m, only: shpobj2pol
 
   implicit none
 
   INTEGER(GPC_OP) set_op
-  integer i, j, ishape
+  integer i, ishape
   type(POLYGON) subject_pol, clip_pol, result_pol
   TYPE(shpfileobject) hshp
   TYPE(shpobject) psobject
@@ -33,33 +34,8 @@ PROGRAM TEST_GPC
   call shpclose(hshp)
   call assert(psobject%nparts >= 1, "psobject%nparts >= 1")
   call assert(psobject%panpartstart(1) == 0, "psobject%panpartstart(1)")
-
-  subject_pol%nparts = psobject%nparts
-  allocate(subject_pol%hole(subject_pol%nparts), &
-       subject_pol%part(subject_pol%nparts))
-  subject_pol%hole = .false.
-  subject_pol%part%closed = .true.
-
-  do i = 1, subject_pol%nparts - 1
-     subject_pol%part(i)%n_points = psobject%panpartstart(i + 1) &
-          - psobject%panpartstart(i)
-  end do
-
-  subject_pol%part(subject_pol%nparts)%n_points = psobject%nvertices &
-       - psobject%panpartstart(psobject%nparts)
-  j = 1
-
-  do i = 1, subject_pol%nparts
-     allocate(subject_pol%part(i)%points(2, subject_pol%part(i)%n_points))
-     subject_pol%part(i)%points(1, :) &
-          = psobject%padfx(j:j + subject_pol%part(i)%n_points - 1)
-     subject_pol%part(i)%points(2, :) &
-          = psobject%padfy(j:j + subject_pol%part(i)%n_points - 1)
-     j = j + subject_pol%part(i)%n_points
-  end do
-
+  subject_pol = shpobj2pol(psobject)
   call shpdestroyobject(psobject)
-
 
   call get_command_arg_dyn(2, filename, &
        "Required arguments: shapefile shapefile")
@@ -68,30 +44,7 @@ PROGRAM TEST_GPC
   call shpclose(hshp)
   call assert(psobject%nparts >= 1, "psobject%nparts >= 1")
   call assert(psobject%panpartstart(1) == 0, "psobject%panpartstart(1)")
-
-  clip_pol%nparts = psobject%nparts
-  allocate(clip_pol%hole(clip_pol%nparts), clip_pol%part(clip_pol%nparts))
-  clip_pol%hole = .false.
-  clip_pol%part%closed = .true.
-
-  do i = 1, clip_pol%nparts - 1
-     clip_pol%part(i)%n_points = psobject%panpartstart(i + 1) &
-          - psobject%panpartstart(i)
-  end do
-
-  clip_pol%part(clip_pol%nparts)%n_points = psobject%nvertices &
-       - psobject%panpartstart(psobject%nparts)
-  j = 1
-
-  do i = 1, clip_pol%nparts
-     allocate(clip_pol%part(i)%points(2, clip_pol%part(i)%n_points))
-     clip_pol%part(i)%points(1, :) &
-          = psobject%padfx(j:j + clip_pol%part(i)%n_points - 1)
-     clip_pol%part(i)%points(2, :) &
-          = psobject%padfy(j:j + clip_pol%part(i)%n_points - 1)
-     j = j + clip_pol%part(i)%n_points
-  end do
-
+  clip_pol = shpobj2pol(psobject)
   call shpdestroyobject(psobject)
 
   print *, "Enter operation (", GPC_DIFF, "difference,", GPC_INT, &
