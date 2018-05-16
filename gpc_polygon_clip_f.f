@@ -67,6 +67,12 @@ contains
          type(gpc_polygon), intent(inout):: subject_polygon, clip_polygon
          type(gpc_polygon), intent(out):: result_polygon
        end subroutine gpc_polygon_clip
+
+       subroutine gpc_free_polygon(p) bind(c)
+         import gpc_polygon
+         implicit none
+         type(gpc_polygon), intent(inout):: p
+       end subroutine gpc_free_polygon
     end interface
 
     integer i, j
@@ -156,12 +162,11 @@ contains
             end do
 
             res_pol%part(i)%points(:, n) = res_pol%part(i)%points(:, 1)
-            deallocate(v_res)
           end associate
        end do
-
-       deallocate(hole_res, l_res_c)
     end if
+    
+    call gpc_free_polygon(rpc)
 
 end subroutine gpc_polygon_clip_f
 
