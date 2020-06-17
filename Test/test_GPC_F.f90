@@ -1,18 +1,17 @@
-PROGRAM TEST_GPC
+PROGRAM TEST_GPC_f
 
-  ! This program tests the GPC library.
+  ! This program tests the GPC_F library.
 
   use, intrinsic:: ISO_C_BINDING
 
-  USE GPC_f, only: GPC_OP, GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
-  use gpc_polygon_clip_f_m, only: POLYGON, gpc_polygon_clip_f
+  USE GPC_f, only: GPC_OP, GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION, POLYGON, &
+       gpc_polygon_clip_f, shpobj2pol
   use jumble, only: get_command_arg_dyn
   use nr_util, only: assert
   use shapelib, only: shpfileobject, shpobject, shpclose, shpt_polygon, &
        shpdestroyobject
   use shapelib_03, only: shp_open_03, shp_read_object_03, shp_create_03, &
        shp_append_object_03
-  use shpobj2pol_m, only: shpobj2pol
 
   implicit none
 
@@ -29,7 +28,7 @@ PROGRAM TEST_GPC
 
   call get_command_arg_dyn(1, filename, &
        "Required arguments: shapefile shapefile")
-  call shp_open_03(filename, "rb", hshp)
+  call shp_open_03(hshp, filename, "rb")
   call shp_read_object_03(hshp, 0, psobject)
   call shpclose(hshp)
   call assert(psobject%nparts >= 1, "psobject%nparts >= 1")
@@ -39,7 +38,7 @@ PROGRAM TEST_GPC
 
   call get_command_arg_dyn(2, filename, &
        "Required arguments: shapefile shapefile")
-  call shp_open_03(filename, "rb", hshp)
+  call shp_open_03(hshp, filename, "rb")
   call shp_read_object_03(hshp, 0, psobject)
   call shpclose(hshp)
   call assert(psobject%nparts >= 1, "psobject%nparts >= 1")
@@ -74,4 +73,4 @@ PROGRAM TEST_GPC
      call shpclose(hshp)
   end if
 
-END PROGRAM TEST_GPC
+END PROGRAM TEST_GPC_F
