@@ -1,7 +1,7 @@
 [
     {
 	"title": "Left_minus_right",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_left",
@@ -12,7 +12,7 @@
     },
     {
 	"title": "Squares_inters",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_left",
@@ -23,7 +23,7 @@
     },
     {
 	"title": "Squares_xor",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_left",
@@ -34,7 +34,7 @@
     },
     {
 	"title": "Squares_union",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_left",
@@ -45,7 +45,7 @@
     },
     {
 	"title": "Right_minus_left",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_right",
@@ -56,7 +56,7 @@
     },
     {
 	"title": "Commut",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/square_right",
@@ -67,7 +67,7 @@
     },
     {
 	"title": "Two_parts_minus_rect",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/two_parts",
@@ -78,7 +78,7 @@
     },
     {
 	"title": "Two_parts_inters_rect",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/two_parts",
@@ -89,7 +89,7 @@
     },
     {
 	"title": "Two_parts_xor_rect",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/two_parts",
@@ -100,7 +100,7 @@
     },
     {
 	"title": "Two_parts_union_rect",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/two_parts",
@@ -111,7 +111,7 @@
     },
     {
 	"title": "Rect_minus_two_parts",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/rectangle",
@@ -122,7 +122,7 @@
     },
     {
 	"title": "Britain_minus_arrows",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/britain",
@@ -133,7 +133,7 @@
     },
     {
 	"title": "Britain_inters_arrows",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/britain",
@@ -144,7 +144,7 @@
     },
     {
 	"title": "Britain_xor_arrows",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/britain",
@@ -155,7 +155,7 @@
     },
     {
 	"title": "Britain_union_arrows",
-	"args":
+	"command":
 	[
 	    "$build_dir/test_GPC",
 	    "$input_dir/britain",
