@@ -14,8 +14,11 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   find_package(Contour_531 CONFIG REQUIRED)
 endif()
 
-find_library(GPC_LIBRARY GPC REQUIRED)
-target_link_libraries(gpc_f PUBLIC contour_531 PRIVATE ${GPC_LIBRARY})
+if(NOT TARGET GPC)
+  find_package(GPC CONFIG REQUIRED)
+endif()
+
+target_link_libraries(gpc_f PUBLIC contour_531 PRIVATE GPC)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 include(ConfigureCompilerFlags)
