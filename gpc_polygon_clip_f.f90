@@ -34,7 +34,9 @@ contains
 
     use, intrinsic:: ISO_C_BINDING
 
-    INTEGER(GPC_OP), intent(in):: set_op ! set operation
+    INTEGER(GPC_OP), intent(in):: set_op
+    ! set operation, must be one of GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION
+    
     type(polygon), intent(in):: subj_pol, clip_pol ! subject and clip polygons
     type(polygon), intent(out):: res_pol ! result polygon
 
@@ -165,9 +167,9 @@ contains
           end associate
        end do
     end if
-    
+
     call gpc_free_polygon(rpc)
 
-end subroutine gpc_polygon_clip_f
+  end subroutine gpc_polygon_clip_f
 
 END module gpc_polygon_clip_f_m
