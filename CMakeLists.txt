@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.16)
 project(GPC_F LANGUAGES Fortran)
 
 add_library(gpc_f gpc_polygon_clip_f.f90 shpobj2pol.f90 gpc_f.f90)
