@@ -16,12 +16,15 @@ if(NOT TARGET GPC)
   find_package(GPC CONFIG REQUIRED)
 endif()
 
-target_link_libraries(gpc_f PUBLIC contour_531 PRIVATE GPC)
+if(NOT TARGET fortranGIS)
+  find_package(fortrangis CONFIG REQUIRED)
+endif()
+
+target_link_libraries(gpc_f PUBLIC contour_531 fortrangis::fortranGIS
+  PRIVATE GPC)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 include(ConfigureCompilerFlags)
-find_path(fortrangis_INCLUDE_DIR shapelib.mod REQUIRED)
-target_include_directories(gpc_f PUBLIC ${fortrangis_INCLUDE_DIR})
 add_subdirectory(Test EXCLUDE_FROM_ALL)
 
 include(CMakePackageConfigHelpers)
