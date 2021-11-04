@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.13)
-project(GPC_F Fortran)
+project(GPC_F LANGUAGES Fortran)
 
 add_library(gpc_f gpc_polygon_clip_f.f90 shpobj2pol.f90 gpc_f.f90)
 
 set_target_properties(gpc_f PROPERTIES Fortran_MODULE_DIRECTORY
   ${PROJECT_BINARY_DIR}/modules)
+
 target_include_directories(gpc_f PUBLIC
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/modules>)
 
@@ -41,7 +42,9 @@ endif()
 
 install(TARGETS gpc_f EXPORT ${PROJECT_NAME}Targets LIBRARY
   INCLUDES DESTINATION ${install_include_dir})
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   DESTINATION lib/cmake/${PROJECT_NAME})
+
 install(EXPORT ${PROJECT_NAME}Targets DESTINATION lib/cmake/${PROJECT_NAME})
 export(EXPORT ${PROJECT_NAME}Targets)
