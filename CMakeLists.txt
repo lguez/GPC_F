@@ -28,8 +28,10 @@ add_subdirectory(Test EXCLUDE_FROM_ALL)
 
 include(CMakePackageConfigHelpers)
 configure_package_config_file(Config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME})
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+  INSTALL_DESTINATION lib/cmake/${PROJECT_NAME})
+
+# Start installation part
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES NAG|Intel)
   set(install_include_dir include/${PROJECT_NAME})
@@ -47,4 +49,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   DESTINATION lib/cmake/${PROJECT_NAME})
 
 install(EXPORT ${PROJECT_NAME}Targets DESTINATION lib/cmake/${PROJECT_NAME})
+
+# End installation part
+
 export(EXPORT ${PROJECT_NAME}Targets)
