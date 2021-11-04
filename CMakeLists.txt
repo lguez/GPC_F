@@ -8,7 +8,7 @@ set_target_properties(gpc_f PROPERTIES Fortran_MODULE_DIRECTORY
 target_include_directories(gpc_f PUBLIC
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/modules>)
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+if(NOT TARGET contour_531)
   find_package(Contour_531 CONFIG REQUIRED)
 endif()
 
