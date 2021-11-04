@@ -26,7 +26,7 @@ target_link_libraries(gpc_f PUBLIC Contour_531::contour_531
 
 add_subdirectory(Test EXCLUDE_FROM_ALL)
 
-configure_file(Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
+configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
 
 # Start installation part
 
