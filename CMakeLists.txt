@@ -20,8 +20,8 @@ if(NOT TARGET fortranGIS)
   find_package(fortrangis CONFIG REQUIRED)
 endif()
 
-target_link_libraries(gpc_f PUBLIC contour_531 fortrangis::fortranGIS
-  PRIVATE GPC)
+target_link_libraries(gpc_f PUBLIC Contour_531::contour_531
+  fortrangis::fortranGIS PRIVATE GPC::GPC)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 include(ConfigureCompilerFlags)

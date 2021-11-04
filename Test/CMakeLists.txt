@@ -6,5 +6,5 @@ endif()
 
 add_executable(test_GPC_F test_GPC_F.f90)
 
-target_link_libraries(test_GPC_F PRIVATE shapelib_03 contour_531 jumble nr_util
-  gpc_f)
+target_link_libraries(test_GPC_F PRIVATE Shapelib_03::shapelib_03
+  Contour_531::contour_531 Jumble::jumble NR_util::nr_util gpc_f)
