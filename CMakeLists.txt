@@ -9,8 +9,6 @@ target_include_directories(gpc_f PUBLIC
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/modules>)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  find_package(NR_util CONFIG REQUIRED)
-  find_package(Jumble CONFIG REQUIRED)
   find_package(Contour_531 CONFIG REQUIRED)
 endif()
 
