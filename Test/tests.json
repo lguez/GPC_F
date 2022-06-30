@@ -3,7 +3,7 @@
 	"title": "Left_minus_right",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_left",
 	    "$input_dir/square_right"
 	],
@@ -14,7 +14,7 @@
 	"title": "Squares_inters",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_left",
 	    "$input_dir/square_right"
 	],
@@ -25,7 +25,7 @@
 	"title": "Squares_xor",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_left",
 	    "$input_dir/square_right"
 	],
@@ -36,7 +36,7 @@
 	"title": "Squares_union",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_left",
 	    "$input_dir/square_right"
 	],
@@ -47,7 +47,7 @@
 	"title": "Right_minus_left",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_right",
 	    "$input_dir/square_left"
 	],
@@ -58,7 +58,7 @@
 	"title": "Commut",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/square_right",
 	    "$input_dir/square_left"
 	],
@@ -69,7 +69,7 @@
 	"title": "Two_parts_minus_rect",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/two_parts",
 	    "$input_dir/rectangle"
 	],
@@ -80,7 +80,7 @@
 	"title": "Two_parts_inters_rect",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/two_parts",
 	    "$input_dir/rectangle"
 	],
@@ -91,7 +91,7 @@
 	"title": "Two_parts_xor_rect",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/two_parts",
 	    "$input_dir/rectangle"
 	],
@@ -102,7 +102,7 @@
 	"title": "Two_parts_union_rect",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/two_parts",
 	    "$input_dir/rectangle"
 	],
@@ -113,7 +113,7 @@
 	"title": "Rect_minus_two_parts",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/rectangle",
 	    "$input_dir/two_parts"
 	],
@@ -124,7 +124,7 @@
 	"title": "Britain_minus_arrows",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/britain",
 	    "$input_dir/arrows"
 	],
@@ -135,7 +135,7 @@
 	"title": "Britain_inters_arrows",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/britain",
 	    "$input_dir/arrows"
 	],
@@ -146,7 +146,7 @@
 	"title": "Britain_xor_arrows",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/britain",
 	    "$input_dir/arrows"
 	],
@@ -157,7 +157,7 @@
 	"title": "Britain_union_arrows",
 	"command":
 	[
-	    "$build_dir/test_GPC_F",
+	    "$build_dir/Test/test_GPC_F",
 	    "$input_dir/britain",
 	    "$input_dir/arrows"
 	],
