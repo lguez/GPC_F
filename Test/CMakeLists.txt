@@ -1,5 +1,4 @@
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  find_package(NR_util CONFIG REQUIRED)
   find_package(Jumble CONFIG REQUIRED)
   find_package(Shapelib_03 CONFIG REQUIRED)
 endif()
@@ -7,4 +6,4 @@ endif()
 add_executable(test_GPC_F test_GPC_F.f90)
 
 target_link_libraries(test_GPC_F PRIVATE Shapelib_03::shapelib_03
-  Contour_531::contour_531 Jumble::jumble NR_util::nr_util gpc_f)
+  Contour_531::contour_531 Jumble::jumble gpc_f)

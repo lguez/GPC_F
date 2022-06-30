@@ -6,8 +6,7 @@ PROGRAM TEST_GPC_f
 
   USE GPC_f, only: GPC_OP, GPC_DIFF, GPC_INT, GPC_XOR, GPC_UNION, POLYGON, &
        gpc_polygon_clip_f, shpobj2pol
-  use jumble, only: get_command_arg_dyn
-  use nr_util, only: assert
+  use jumble, only: get_command_arg_dyn, assert
   use shapelib, only: shpfileobject, shpobject, shpclose, shpt_polygon, &
        shpdestroyobject
   use shapelib_03, only: shp_open_03, shp_read_object_03, shp_create_03, &
