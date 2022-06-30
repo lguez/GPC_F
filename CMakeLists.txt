@@ -11,8 +11,17 @@ if(NOT TARGET GPC)
   find_package(GPC CONFIG REQUIRED)
 endif()
 
-if(NOT TARGET fortranGIS)
-  find_package(fortrangis CONFIG REQUIRED)
+if(NOT TARGET fortrangis::fortranGIS)
+  option(FETCH "Download and build FortranGIS")
+
+  if(FETCH)
+    include(FetchContent)
+    FetchContent_Declare(fortrangis GIT_REPOSITORY
+      https://github.com/ARPA-SIMC/fortrangis)
+    FetchContent_MakeAvailable(fortrangis)
+  else()
+    find_package(fortrangis CONFIG REQUIRED)
+  endif()
 endif()
 
 # End finding things
