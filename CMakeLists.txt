@@ -11,6 +11,10 @@ if(NOT TARGET GPC)
   find_package(GPC CONFIG REQUIRED)
 endif()
 
+if(NOT TARGET shapelib_03)
+  find_package(Shapelib_03 CONFIG REQUIRED)
+endif()
+
 if(NOT TARGET fortrangis::fortranGIS)
   option(FETCH "Download and build FortranGIS")
 
@@ -26,13 +30,14 @@ endif()
 
 # End finding things
 
-add_library(gpc_f gpc_polygon_clip_f.f90 shpobj2pol.f90 gpc_f.f90)
+add_library(gpc_f gpc_polygon_clip_f.f90 shpobj2pol.f90 gpc_f.f90
+  shp_read_pol.f90)
 set_target_properties(gpc_f PROPERTIES Fortran_MODULE_DIRECTORY
   ${PROJECT_BINARY_DIR}/modules)
 target_include_directories(gpc_f PUBLIC
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/modules>)
 target_link_libraries(gpc_f PUBLIC Contour_531::contour_531
-  fortrangis::fortranGIS PRIVATE GPC::GPC)
+  fortrangis::fortranGIS PRIVATE GPC::GPC Shapelib_03::shapelib_03)
 add_subdirectory(Test EXCLUDE_FROM_ALL)
 configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
 

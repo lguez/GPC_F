@@ -1,6 +1,5 @@
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   find_package(Jumble CONFIG REQUIRED)
-  find_package(Shapelib_03 CONFIG REQUIRED)
 endif()
 
 add_executable(test_GPC_F test_GPC_F.f90)
