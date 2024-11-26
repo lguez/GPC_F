@@ -3,12 +3,21 @@ project(GPC_F LANGUAGES Fortran)
 
 # Start finding things
 
+include(FetchContent)
+option(FETCH "Download and build GPC and FortranGIS")
+
 if(NOT TARGET contour_531)
   find_package(Contour_531 CONFIG REQUIRED)
 endif()
 
 if(NOT TARGET GPC)
-  find_package(GPC CONFIG REQUIRED)
+  if(FETCH)
+    FetchContent_Declare(GPC GIT_REPOSITORY
+      https://github.com/lguez/GPC.git GIT_TAG main)
+    FetchContent_MakeAvailable(GPC)
+  else()
+    find_package(GPC CONFIG REQUIRED)
+  endif()
 endif()
 
 if(NOT TARGET shapelib_03)
@@ -16,10 +25,7 @@ if(NOT TARGET shapelib_03)
 endif()
 
 if(NOT TARGET fortrangis::fortranGIS)
-  option(FETCH "Download and build FortranGIS")
-
   if(FETCH)
-    include(FetchContent)
     FetchContent_Declare(fortrangis GIT_REPOSITORY
       https://github.com/ARPA-SIMC/fortrangis)
     FetchContent_MakeAvailable(fortrangis)
